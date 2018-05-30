@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0"
+           prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
+           fx:controller="org.tron.MyController.TokenParticipateController">
+    <children>
+        <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
+            <children>
+                <HBox alignment="CENTER_LEFT" layoutX="26.0" prefHeight="68.0" prefWidth="600.0"
+                      styleClass="title-banner" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Label maxHeight="1.7976931348623157E308" styleClass="title-label" text="Token Participate">
+                            <font>
+                                <Font size="30.0"/>
+                            </font>
+                            <padding>
+                                <Insets left="20.0" right="20.0"/>
+                            </padding>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" spacing="20.0" AnchorPane.bottomAnchor="15.0"
+                      AnchorPane.rightAnchor="15.0">
+                    <children>
+                        <Button layoutX="523.0" layoutY="360.0" maxWidth="80.0"
+                                mnemonicParsing="false"
+                                onAction="#cancelClicked" text="Cancel" HBox.hgrow="ALWAYS"/>
+                        <Button layoutX="523.0" layoutY="360.0" maxWidth="80.0"
+                                mnemonicParsing="false"
+                                onAction="#okClicked" text="OK" HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                    <children>
+                        <VBox>
+                            <children>
+                                <Label text="Balance"/>
+                                <Label text="Frozen"/>
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label fx:id="balance" text="0.00"/>
+                                <Label fx:id="frozen" text="0.00"/>
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label text="TRX"/>
+                                <Label text="TRX"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+                <HBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="120"
+                      alignment="CENTER" spacing="20">
+                    <VBox spacing="5" alignment="CENTER_LEFT">
+                        <Label text="Name" prefHeight="27"/>
+                        <Label text="Total Supply" prefHeight="27"/>
+                        <Label text="Issuer" prefHeight="27"/>
+                        <Label text="Description" prefHeight="27"/>
+                        <Label text="Price" prefHeight="27"/>
+                        <Label text="Amount" prefHeight="27"/>
+                        <Label text="" prefHeight="54"/>
+                    </VBox>
+                    <VBox spacing="5" alignment="CENTER_LEFT">
+                        <Label fx:id="name" text="Name" prefHeight="27" maxWidth="500"/>
+                        <Label fx:id="totalSupply" text="Total Supply" prefHeight="27" maxWidth="500"/>
+                        <Label fx:id="issuer" text="Issuer" prefHeight="27" maxWidth="500"/>
+                        <Label fx:id="desc" text="Description" prefHeight="27" maxWidth="500"/>
+                        <Label fx:id="price" text="Price" prefHeight="27" maxWidth="500"/>
+                        <TextField fx:id="amount" prefWidth="400" maxWidth="500"/>
+                        <CheckBox fx:id="agree"
+                                  text="Confirmed to spend 0 TRX and get 0 tokens."
+                                  prefHeight="54" prefWidth="400" wrapText="true"/>
+                    </VBox>
+
+                </HBox>
+            </children>
+            <effect>
+                <DropShadow/>
+            </effect>
+        </AnchorPane>
+    </children>
+</StackPane>

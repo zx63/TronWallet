@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0"
+           prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
+           fx:controller="org.tron.MyController.UnfreezeController">
+    <children>
+        <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
+            <children>
+                <HBox alignment="CENTER_LEFT" layoutX="26.0" prefHeight="68.0" prefWidth="600.0"
+                      styleClass="title-banner" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Label maxHeight="1.7976931348623157E308" styleClass="title-label" text="Unfreeze">
+                            <font>
+                                <Font size="30.0"/>
+                            </font>
+                            <padding>
+                                <Insets left="20.0" right="20.0"/>
+                            </padding>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" spacing="20.0" AnchorPane.bottomAnchor="15.0"
+                      AnchorPane.rightAnchor="15.0">
+                    <children>
+                        <Button onAction="#cancelClicked" text="Cancel" HBox.hgrow="ALWAYS"/>
+                        <Button onAction="#okClicked" text="Unfreeze" HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
+                <VBox alignment="CENTER" spacing="5.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0"
+                      AnchorPane.topAnchor="120.0">
+                    <children>
+                        <Label text="TRX can be frozen/locked to gain Tron Power and enable additional features."/>
+                        <Label text="For example, with your Tron Power you can vote for Super Representatives."/>
+                        <Label text="Frozen tokens are 'locked' for a period of 3 days. During this period the frozen TRX cannot be traded."/>
+                        <Label text="After this period you can unfreeze the TRX and trade the tokens."/>
+                    </children>
+                </VBox>
+                <HBox spacing="10.0" alignment="CENTER" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="100.0"
+                      AnchorPane.rightAnchor="100">
+                    <children>
+                        <VBox>
+                            <children>
+                                <Label text="Total"/>
+                                <Label text="Frozen"/>
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label fx:id="balance" text="0.00"/>
+                                <Label fx:id="frozen" text="0.00"/>
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label text="TRX"/>
+                                <Label text="TRX"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+            <effect>
+                <DropShadow/>
+            </effect>
+        </AnchorPane>
+    </children>
+</StackPane>

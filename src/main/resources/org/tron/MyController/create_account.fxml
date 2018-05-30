@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0"
+           prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
+           fx:controller="org.tron.MyController.CreateAccountController">
+    <children>
+        <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
+            <children>
+                <HBox alignment="CENTER_LEFT" layoutX="26.0" prefHeight="68.0" prefWidth="600.0"
+                      styleClass="title-banner" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Label maxHeight="1.7976931348623157E308" styleClass="title-label" text="Create Account">
+                            <font>
+                                <Font size="30.0"/>
+                            </font>
+                            <HBox.margin>
+                                <Insets/>
+                            </HBox.margin>
+                            <padding>
+                                <Insets left="20.0" right="20.0"/>
+                            </padding>
+                        </Label>
+                    </children>
+                </HBox>
+                <Label fx:id="explanationLabel" layoutX="22.0" layoutY="83.0" prefHeight="52.0" prefWidth="561.0"
+                       text="If you forget/lose your private key you will never be able to access your assets, and no one will be able to help you recover it"
+                       wrapText="true" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="17.0"/>
+                <HBox alignment="CENTER_RIGHT" layoutX="272.0" layoutY="360.0" prefHeight="26.0" prefWidth="561.0"
+                      spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
+                    <children>
+                        <Button fx:id="okButton" defaultButton="true" layoutX="523.0"
+                                layoutY="360.0" maxWidth="80.0" mnemonicParsing="false" onAction="#okClicked" text="OK"
+                                HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
+                <GridPane fx:id="widgetGrid" layoutX="22.0" layoutY="146.0" prefHeight="114.0" prefWidth="561.0"
+                          vgap="10.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="17.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="273.0" minWidth="10.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="417.0" minWidth="10.0" prefWidth="417.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="NEVER"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label text="Account"/>
+                        <Label text="Private key" GridPane.rowIndex="1"/>
+                        <TextField fx:id="account" prefWidth="366.0" GridPane.columnIndex="1"/>
+                        <TextField fx:id="privateKey" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Button mnemonicParsing="false" onAction="#copyPrivateKeyClicked"
+                                text="Copy private key" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
+                                GridPane.rowIndex="2" GridPane.valignment="TOP"/>
+                    </children>
+                </GridPane>
+            </children>
+            <effect>
+                <DropShadow/>
+            </effect>
+        </AnchorPane>
+    </children>
+</StackPane>

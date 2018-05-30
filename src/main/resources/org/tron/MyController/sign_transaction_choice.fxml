@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0"
+           prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
+           fx:controller="org.tron.MyController.SignTransactionController">
+    <children>
+        <AnchorPane styleClass="tab-pane-content">
+            <children>
+                <VBox alignment="CENTER" spacing="5.0" AnchorPane.topAnchor="0"
+                      AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0">
+                    <children>
+                        <Label text="Two computer systems are required."/>
+                        <Label text="Step1. Create an unsigned transaction on the online system."/>
+                        <Label text="Step2. Transfer the transaction to the offline system."/>
+                        <Label text="Step3. Sign the transaction on the offline system."/>
+                        <Label text="Step4. Transfer back to the online system."/>
+                        <Label text="Step5. Broadcast the transaction on the online system."/>
+                    </children>
+                </VBox>
+                <HBox alignment="CENTER" spacing="10"
+                      AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Button onAction="#chooseCreate"
+                                text="Create Unsigned Transaction"/>
+                        <Button onAction="#chooseBroadcast"
+                                text="Load Hex Signed Transaction"/>
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

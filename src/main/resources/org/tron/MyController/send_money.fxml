@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0"
+           prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
+           fx:controller="org.tron.MyController.SendMoneyController">
+    <children>
+        <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
+            <children>
+                <HBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" alignment="CENTER" AnchorPane.topAnchor="0"
+                      AnchorPane.bottomAnchor="0">
+                    <ImageView fx:id="qrcode" fitHeight="200.0" fitWidth="200.0"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" layoutX="26.0" prefHeight="68.0" prefWidth="600.0"
+                      styleClass="title-banner" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Label maxHeight="1.7976931348623157E308" styleClass="title-label" text="Send Money">
+                            <font>
+                                <Font size="30.0"/>
+                            </font>
+                            <HBox.margin>
+                                <Insets/>
+                            </HBox.margin>
+                            <padding>
+                                <Insets left="20.0" right="20.0"/>
+                            </padding>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <GridPane alignment="CENTER" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="100.0"
+                          AnchorPane.rightAnchor="100.0">
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="100.0"/>
+                        <ColumnConstraints prefWidth="400.0"/>
+                        <ColumnConstraints prefWidth="100.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label prefHeight="27" text="To" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Label prefHeight="27" text="Amount" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <Label prefHeight="27" text="Passsword" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+
+                        <TextField fx:id="toAddress" promptText="to tron address" GridPane.rowIndex="0"
+                                   GridPane.columnIndex="1"/>
+                        <TextField fx:id="amount" promptText="0.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <PasswordField fx:id="password" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                        <ComboBox fx:id="type" prefHeight="27.0" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                    </children>
+                </GridPane>
+                <HBox alignment="CENTER_RIGHT" fillHeight="true" prefHeight="30.0" prefWidth="600.0" spacing="15.0"
+                      VBox.vgrow="NEVER" AnchorPane.bottomAnchor="30" AnchorPane.rightAnchor="30">
+                    <children>
+                        <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#close"
+                                prefWidth="79.0"
+                                text="Cancel"/>
+                        <Button fx:id="sendBtn" defaultButton="true" mnemonicParsing="false"
+                                onAction="#send"
+                                prefWidth="79.0" text="Send"/>
+                    </children>
+                </HBox>
+            </children>
+            <effect>
+                <DropShadow/>
+            </effect>
+        </AnchorPane>
+    </children>
+</StackPane>
