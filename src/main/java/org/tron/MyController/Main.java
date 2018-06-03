@@ -14,7 +14,7 @@ import org.tron.MyUtils.Config;
 import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
 import org.tron.controls.NotificationBarPane;
-import org.tron.entity.EntityMeta;
+import org.tron.MyEntity.EntityMeta;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -127,6 +127,10 @@ public class Main extends Application {
         } catch (IOException e) {
             throw new RuntimeException(e);  // Can't happen.
         }
+    }
+
+    public void max() {
+        mainWindow.setMaximized(true);
     }
 
     @Override

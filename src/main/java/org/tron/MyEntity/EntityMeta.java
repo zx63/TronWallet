@@ -1,4 +1,4 @@
-package org.tron.entity;
+package org.tron.MyEntity;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

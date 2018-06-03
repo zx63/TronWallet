@@ -38,19 +38,20 @@
                     <columnConstraints>
                         <ColumnConstraints prefWidth="100.0"/>
                         <ColumnConstraints prefWidth="400.0"/>
-                        <ColumnConstraints prefWidth="100.0"/>
                     </columnConstraints>
                     <children>
                         <Label prefHeight="27" text="To" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                         <Label prefHeight="27" text="Amount" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                        <Label prefHeight="27" text="Passsword" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <Label prefHeight="27" text="Passsword" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
 
                         <TextField fx:id="toAddress" promptText="to tron address" GridPane.rowIndex="0"
                                    GridPane.columnIndex="1"/>
                         <TextField fx:id="amount" promptText="0.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                        <PasswordField fx:id="password" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                        <ComboBox fx:id="type" prefHeight="27.0" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                        <ComboBox fx:id="type" prefHeight="27.0" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                        <PasswordField fx:id="password" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
                     </children>
                 </GridPane>
                 <HBox alignment="CENTER_RIGHT" fillHeight="true" prefHeight="30.0" prefWidth="600.0" spacing="15.0"

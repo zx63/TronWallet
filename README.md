@@ -1,11 +1,8 @@
 # Tron wallet
 
-This application is a desktop Tron wallet that has the following features:
-
-* send transaction
+Tron Wallet for Mac/Windows
 
 # Screenshots
 
-![screenshot1](/screenshots/synced.png)
-
-![screenshot1](/screenshots/qrcode.png)
+![screenshot1](/screenshots/a.png)
+![screenshot1](/screenshots/b.png)

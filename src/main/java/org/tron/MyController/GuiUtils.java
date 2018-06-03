@@ -10,6 +10,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -29,7 +30,8 @@ public class GuiUtils {
             // files for an alert window for you, and then you customise it as you see fit. I guess it makes sense in
             // an odd sort of way.
             Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initStyle(StageStyle.UNDECORATED);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
             FXMLLoader loader = new FXMLLoader(GuiUtils.class.getResource("alert.fxml"));
             Pane pane = loader.load();
             AlertWindowController controller = loader.getController();
@@ -69,7 +71,9 @@ public class GuiUtils {
 
     public static void informationalAlert(String message, String details, Object... args) {
         String formattedDetails = String.format(details, args);
-        Runnable r = () -> runAlert((stage, controller) -> controller.informational(stage, message, formattedDetails));
+        Runnable r = () -> runAlert((stage, controller) -> {
+            controller.informational(stage, message, formattedDetails);
+        });
         if (Platform.isFxApplicationThread())
             r.run();
         else

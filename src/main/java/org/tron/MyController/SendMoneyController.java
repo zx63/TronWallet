@@ -48,7 +48,7 @@ public class SendMoneyController {
         Client client = Client.getInstance();
         try {
             if (type.getValue().equals("TRX")) {
-                GrpcAPI.Return result = client.sendCoin(password.getText(), toAddress.getText(), Long.parseLong(amount.getText()) * Config.DROP_UNIT);
+                GrpcAPI.Return result = client.sendCoin(password.getText(), toAddress.getText(), (long) (Double.parseDouble(amount.getText()) * Config.DROP_UNIT));
                 if (result.getResult()) {
                     GuiUtils.informationalAlert("Success", "Send " + amount.getText() + " TRX to " + toAddress.getText());
                 }else {
@@ -71,7 +71,8 @@ public class SendMoneyController {
             sendBtn.setDisable(false);
             cancelBtn.setDisable(false);
         }
-        balanceTmpSimpleObjectProperty.set(String.valueOf(Long.parseLong(ShareData.getBalance()) - Long.parseLong(amount.getText())));
+        ShareData.tabSimpleObjectProperty.set(1);
+        balanceTmpSimpleObjectProperty.set(String.valueOf(Double.parseDouble(ShareData.getBalance()) - Double.parseDouble(amount.getText())));
         toAddress.setText("");
         password.setText("");
         amount.setText("");

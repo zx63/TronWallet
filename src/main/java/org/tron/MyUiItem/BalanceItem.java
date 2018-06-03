@@ -1,4 +1,4 @@
-package org.tron.MyTableItem;
+package org.tron.MyUiItem;
 
 import javafx.beans.property.SimpleStringProperty;
 

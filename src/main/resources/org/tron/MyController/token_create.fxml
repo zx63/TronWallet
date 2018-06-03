@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<StackPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0" prefWidth="800.0"
+           xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.tron.MyController.TokenCreateController">
+    <children>
+        <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
+            <children>
+                <HBox alignment="CENTER_LEFT" layoutX="26.0" prefHeight="68.0" prefWidth="600.0"
+                      styleClass="title-banner" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Label styleClass="title-label" text="Issue a Token">
+                            <font>
+                                <Font size="30.0"/>
+                            </font>
+                            <padding>
+                                <Insets left="20.0" right="20.0"/>
+                            </padding>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" spacing="20.0" AnchorPane.bottomAnchor="15.0"
+                      AnchorPane.rightAnchor="15.0">
+                    <children>
+                        <Button layoutX="523.0" layoutY="360.0" maxWidth="80.0" mnemonicParsing="false"
+                                onAction="#cancelClicked" text="Close" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="ok" layoutX="523.0" layoutY="360.0" maxWidth="80.0" mnemonicParsing="false"
+                                onAction="#okClicked" text="OK" HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
+
+                <GridPane hgap="20" vgap="5" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20"
+                          AnchorPane.topAnchor="80">
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="200.0"/>
+                        <ColumnConstraints prefWidth="180.0"/>
+                        <ColumnConstraints prefWidth="180.0"/>
+                        <ColumnConstraints prefWidth="180.0"/>
+                        <ColumnConstraints prefWidth="100.0"/>
+                        <ColumnConstraints prefWidth="100.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label text="Token name *" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="tokenName" promptText="Token name" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="5" GridPane.rowIndex="0"/>
+
+                        <Label text="Token Abbreviation *" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <TextField fx:id="tokenAbbr" promptText="Token Abbreviation" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="5" GridPane.rowIndex="1"/>
+
+                        <Label text="Total supply *" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <TextField fx:id="supply" promptText="Total supply" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="5" GridPane.rowIndex="2"/>
+
+                        <Label text="Description *" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <TextField fx:id="description" promptText="Description" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="5" GridPane.rowIndex="3"/>
+
+                        <Label text="Website URL *" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <TextField fx:id="url" text="http://" GridPane.columnIndex="1" GridPane.columnSpan="5"
+                                   GridPane.rowIndex="4"/>
+
+                        <Label text="Exchange Rate *" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <TextField fx:id="trxAmount" promptText="TRX Amount" text="1" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="1" GridPane.rowIndex="5"/>
+                        <TextField fx:id="tokenAmount" promptText="Token Amount" text="1" GridPane.columnIndex="2"
+                                   GridPane.columnSpan="1" GridPane.rowIndex="5"/>
+                        <Label fx:id="price" text="Token Price: 1 Token = 1 TRX" GridPane.columnSpan="3" GridPane.columnIndex="3"
+                               GridPane.rowIndex="5"/>
+
+                        <Label text="Frozen Supply *" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <TextField fx:id="forzenAmount" promptText="Frozen Amount" text="0" GridPane.columnIndex="1"
+                                   GridPane.columnSpan="2" GridPane.rowIndex="6"/>
+                        <TextField fx:id="forzenDay" promptText="Days to freeze" text="1" GridPane.columnIndex="3"
+                                   GridPane.columnSpan="3" GridPane.rowIndex="6"/>
+
+                        <Label text="Participation *" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                        <DatePicker fx:id="startDate" promptText="startDate" GridPane.columnIndex="1"
+                                    GridPane.columnSpan="1" GridPane.rowIndex="7"/>
+                        <DatePicker fx:id="endDate" promptText="endDate" GridPane.columnIndex="2"
+                                    GridPane.columnSpan="1" GridPane.rowIndex="7"/>
+
+                    </children>
+                </GridPane>
+            </children>
+            <effect>
+                <DropShadow/>
+            </effect>
+        </AnchorPane>
+    </children>
+</StackPane>

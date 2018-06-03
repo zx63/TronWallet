@@ -8,10 +8,10 @@ import com.j256.ormlite.table.TableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.MyController.GuiUtils;
-import org.tron.entity.EntityAccount;
-import org.tron.entity.EntityBalance;
-import org.tron.entity.EntityMeta;
-import org.tron.entity.EntityPassword;
+import org.tron.MyEntity.EntityAccount;
+import org.tron.MyEntity.EntityBalance;
+import org.tron.MyEntity.EntityMeta;
+import org.tron.MyEntity.EntityPassword;
 
 import java.io.IOException;
 import java.sql.SQLException;

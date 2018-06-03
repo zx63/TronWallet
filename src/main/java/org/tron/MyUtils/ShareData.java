@@ -1,18 +1,22 @@
 package org.tron.MyUtils;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tron.MyEntity.EntityMeta;
 import org.tron.api.GrpcAPI;
-import org.tron.entity.EntityMeta;
+import org.tron.common.utils.TransactionUtils;
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
 import org.tron.walletcli.Client;
 import org.tron.walletserver.WalletClient;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -153,6 +157,7 @@ public class ShareData {
         return (String) data.get(TAG_BAND_WIDTH);
     }
 
+    public static SimpleIntegerProperty tabSimpleObjectProperty = new SimpleIntegerProperty();
     public static SimpleObjectProperty<String> addressSimpleObjectProperty = new SimpleObjectProperty<>();
     public static SimpleObjectProperty<String> balanceSimpleObjectProperty = new SimpleObjectProperty<>();
     public static SimpleObjectProperty<String> balanceTmpSimpleObjectProperty = new SimpleObjectProperty<>();
@@ -246,8 +251,7 @@ public class ShareData {
                         return;
                     }
 
-                    int transactionFromListCount = (int) WalletClient.getTransactionsFromThisCount(addressBytes).getNum();
-                    GrpcAPI.TransactionList transactionFromList = WalletClient.getTransactionsFromThis(addressBytes, (transactionFromListCount - 100 <= 0) ? 0 : (transactionFromListCount - 100), 100).get();
+                    GrpcAPI.TransactionList transactionFromList = WalletClient.getTransactionsFromThis(addressBytes, 0, 500).get();
 
                     if (transactionFromList != null) {
                         ShareData.setFromTransactionList(transactionFromList.getTransactionList());
@@ -260,21 +264,32 @@ public class ShareData {
                     if (ShareData.getToTransactionList() != null)
                         tList.addAll(ShareData.getToTransactionList());
 
+                    tList.sort((o1, o2) -> {
+                        long date1 = o1.getRawData().getTimestamp();
+                        if(String.valueOf(date1).length() > String.valueOf(System.currentTimeMillis()).length()) {
+                            date1 = (long) (date1 / 1e6);
+                        }
+                        long date2 = o2.getRawData().getTimestamp();
+                        if(String.valueOf(date2).length() > String.valueOf(System.currentTimeMillis()).length()) {
+                            date2 = (long) (date2 / 1e6);
+                        }
+                        return Long.compare(date2, date1);
+                    });
                     if (!pendingTransaction.isEmpty()) {
                         tList.forEach(tx -> {
                             Iterator<Protocol.Transaction> it = pendingTransaction.iterator();
                             while (it.hasNext()) {
                                 Protocol.Transaction ptx = it.next();
-                                if (ptx.getRawData().getContractList().equals(tx.getRawData().getContractList())) {
+                                if (Arrays.equals(TransactionUtils.getHash(ptx), TransactionUtils.getHash(tx))) {
                                     it.remove();
+                                    transactionSimpleObjectProperty.set(null);
                                 }
                             }
                         });
                         for (Protocol.Transaction transaction : pendingTransaction) {
-                            tList.add(transaction);
+                            tList.add(0, transaction);
                         }
                     }
-                    tList.sort((o1, o2) -> Long.compare(o2.getRawData().getExpiration(), o1.getRawData().getExpiration()));
                     transactionSimpleObjectProperty.set(tList);
                 });
             } catch (Throwable t) {
@@ -301,8 +316,7 @@ public class ShareData {
                         return;
                     }
 
-                    int getTransactionsToThisCount = (int) WalletClient.getTransactionsToThisCount(addressBytes).getNum();
-                    GrpcAPI.TransactionList transactionToList = WalletClient.getTransactionsToThis(addressBytes, (getTransactionsToThisCount - 100 <= 0) ? 0 : (getTransactionsToThisCount - 100), 100).get();
+                    GrpcAPI.TransactionList transactionToList = WalletClient.getTransactionsToThis(addressBytes, 0, 500).get();
 
                     if (transactionToList != null) {
                         ShareData.setToTransactionList(transactionToList.getTransactionList());
@@ -315,21 +329,32 @@ public class ShareData {
                     if (ShareData.getToTransactionList() != null)
                         tList.addAll(ShareData.getToTransactionList());
 
+                    tList.sort((o1, o2) -> {
+                        long date1 = o1.getRawData().getTimestamp();
+                        if(String.valueOf(date1).length() > String.valueOf(System.currentTimeMillis()).length()) {
+                            date1 = (long) (date1 / 1e6);
+                        }
+                        long date2 = o2.getRawData().getTimestamp();
+                        if(String.valueOf(date2).length() > String.valueOf(System.currentTimeMillis()).length()) {
+                            date2 = (long) (date2 / 1e6);
+                        }
+                        return Long.compare(date2, date1);
+                    });
                     if (!pendingTransaction.isEmpty()) {
                         tList.forEach(tx -> {
                             Iterator<Protocol.Transaction> it = pendingTransaction.iterator();
                             while (it.hasNext()) {
                                 Protocol.Transaction ptx = it.next();
-                                if (ptx.getRawData().getContractList().equals(tx.getRawData().getContractList())) {
+                                if (Arrays.equals(TransactionUtils.getHash(ptx), TransactionUtils.getHash(tx))) {
                                     it.remove();
+                                    transactionSimpleObjectProperty.set(null);
                                 }
                             }
                         });
                         for (Protocol.Transaction transaction : pendingTransaction) {
-                            tList.add(transaction);
+                            tList.add(0, transaction);
                         }
                     }
-                    tList.sort((o1, o2) -> Long.compare(o2.getRawData().getExpiration(), o1.getRawData().getExpiration()));
                     transactionSimpleObjectProperty.set(tList);
                 });
             } catch (Throwable t) {
@@ -394,7 +419,7 @@ public class ShareData {
             } catch (Throwable t) {
                 logger.error("Unhandled exception", t);
             }
-        }, 1, 2, TimeUnit.SECONDS);
+        }, 1, 5, TimeUnit.SECONDS);
 
     }
 
@@ -415,6 +440,11 @@ public class ShareData {
         tokenSimpleObjectProperty.set(null);
         try {
             SQLiteUtil.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Files.deleteIfExists(Paths.get(Config.WALLET_DB_FILE));
         } catch (IOException e) {
             e.printStackTrace();
         }

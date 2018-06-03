@@ -13,6 +13,7 @@ import org.tron.api.GrpcAPI.WitnessList;
 import org.tron.common.crypto.ECKey;
 import org.tron.common.utils.ByteArray;
 import org.tron.protos.Contract;
+import org.tron.protos.Protocol;
 import org.tron.protos.Protocol.Account;
 import org.tron.protos.Protocol.Block;
 import org.tron.walletserver.WalletClient;
@@ -398,6 +399,15 @@ public class Client {
     } catch (Exception ex) {
       ex.printStackTrace();
       return GrpcAPI.Return.newBuilder().setResult(false).setCode(GrpcAPI.Return.response_code.OTHER_ERROR).build();
+    }
+  }
+
+  public Protocol.Transaction createUnsignedVoteWitnessTransaction(String owner, HashMap<String, String> witness) {
+    try {
+      return WalletClient.createUnsignedVoteWitnessTransaction(WalletClient.decodeFromBase58Check(owner), witness);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return null;
     }
   }
 

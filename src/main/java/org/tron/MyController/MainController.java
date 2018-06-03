@@ -3,6 +3,8 @@ package org.tron.MyController;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,8 +24,8 @@ import javafx.scene.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tron.MyTableItem.BalanceItem;
-import org.tron.MyTableItem.TransactionItem;
+import org.tron.MyUiItem.BalanceItem;
+import org.tron.MyUiItem.TransactionItem;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.ShareData;
 import org.tron.common.crypto.Hash;
@@ -92,7 +94,12 @@ public class MainController implements Initializable {
 
     // Called by FXMLLoader.
     public void initialize(URL location, ResourceBundle resources) {
-
+        ShareData.tabSimpleObjectProperty.addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                switchTab(newValue.intValue());
+            }
+        });
         close.setOnMouseEntered(e -> close.setImage(new Image("images/close_hover.png")));
         close.setOnMousePressed(e -> close.setImage(new Image("images/close_press.png")));
         close.setOnMouseExited(e -> close.setImage(new Image("images/close.png")));
@@ -256,8 +263,6 @@ public class MainController implements Initializable {
         transactionTableView.setItems(transactionData);
 
         copyTransactionItem.setOnAction(t -> {
-
-            Platform.runLater(() -> Main.instance.dump(Main.instance.uiStack));
             // Do something with current row
             TransactionItem curr = transactionTableView.getItems().get(transactionTableView.getFocusModel().getFocusedIndex());
             Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -327,8 +332,11 @@ public class MainController implements Initializable {
             Protocol.Transaction transaction = transactionList.get(i);
             ByteString from = null;
             ByteString to = null;
-            long date = transaction.getRawData().getExpiration();
-            long amount = 0;
+            long date = transaction.getRawData().getTimestamp();
+            if (String.valueOf(date).length() > String.valueOf(System.currentTimeMillis()).length()) {
+                date = (long) (date / 1e6);
+            }
+            String amount = null;
             ByteString typeByteString;
             String type = "";
             String hash = ByteArray.toHexString(Hash.sha256(transaction.getRawData().toByteArray()));
@@ -343,8 +351,8 @@ public class MainController implements Initializable {
                                         .getOwnerAddress();
                                 to = contract.getParameter().unpack(Contract.TransferContract.class)
                                         .getToAddress();
-                                amount = contract.getParameter().unpack(Contract.TransferContract.class)
-                                        .getAmount() / Config.DROP_UNIT;
+                                amount = new DecimalFormat(",###.######")
+                                        .format(contract.getParameter().unpack(Contract.TransferContract.class).getAmount() * 1.0f / Config.DROP_UNIT);
                                 type = "TRX";
                                 break;
                             case TransferAssetContract:
@@ -352,8 +360,8 @@ public class MainController implements Initializable {
                                         .getOwnerAddress();
                                 to = contract.getParameter().unpack(Contract.TransferAssetContract.class)
                                         .getToAddress();
-                                amount = contract.getParameter().unpack(Contract.TransferAssetContract.class)
-                                        .getAmount();
+                                amount = new DecimalFormat(",###.######").format(contract.getParameter().unpack(Contract.TransferAssetContract.class)
+                                        .getAmount());
                                 typeByteString = contract.getParameter().unpack(Contract.TransferAssetContract.class)
                                         .getAssetName();
                                 type = new String(typeByteString.toByteArray());
@@ -364,7 +372,7 @@ public class MainController implements Initializable {
                     }
 
 
-                    if (amount > 0) {
+                    if (amount != null) {
                         String fromAddress = WalletClient.encode58Check(from.toByteArray());
                         String toAddress = WalletClient.encode58Check(to.toByteArray());
                         if (StringUtils.equals(fromAddress, address)) {
@@ -410,6 +418,10 @@ public class MainController implements Initializable {
             String dateFormatted = formatter.format(date);
             return dateFormatted;
         }
+    }
+
+    public void switchTab(int index) {
+        tabPane.getSelectionModel().select(index);
     }
 
 }

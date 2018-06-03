@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
-import org.tron.entity.EntityMeta;
+import org.tron.MyEntity.EntityMeta;
 import org.tron.walletcli.Client;
 
 public class LoginController {

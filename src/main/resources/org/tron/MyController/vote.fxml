@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0"
            prefWidth="800.0"
@@ -12,19 +10,18 @@
                     AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0"
                     AnchorPane.rightAnchor="0">
             <children>
-                <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.rightAnchor="0.0">
+
+                <HBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <children>
-                        <Button maxWidth="80.0"
-                                mnemonicParsing="false"
+                        <Button mnemonicParsing="false"
                                 onAction="#reloadClicked" text="Reload" HBox.hgrow="ALWAYS"/>
-                        <Button maxWidth="80.0"
-                                mnemonicParsing="false"
-                                onAction="#submitClicked" text="Submit" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false"
+                                onAction="#submitClicked" text="Submit Vote" HBox.hgrow="ALWAYS"/>
                     </children>
                 </HBox>
                 <TableView fx:id="voteTableView" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                           AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="50" >
+                           AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="50">
                     <columns>
                         <TableColumn sortable="false" fx:id="urlCol" prefWidth="280.0" text="Url"/>
                         <TableColumn sortable="false" fx:id="addressCol" prefWidth="350.0" text="Address"/>
@@ -32,7 +29,7 @@
                         <TableColumn sortable="false" fx:id="totalMissedCol" prefWidth="90.0" text="Missed"/>
                         <TableColumn sortable="false" fx:id="latestBlockNumCol" prefWidth="120.0" text="Latest Block"/>
                         <TableColumn sortable="false" fx:id="voteCountCol" prefWidth="150.0" text="Vote"/>
-                        <TableColumn sortable="false" fx:id="myVoteCountCol" prefWidth="150.0" text="My Vote" />
+                        <TableColumn sortable="false" fx:id="myVoteCountCol" prefWidth="150.0" text="My Vote"/>
                     </columns>
                 </TableView>
             </children>

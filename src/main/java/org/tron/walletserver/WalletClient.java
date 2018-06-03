@@ -28,14 +28,15 @@ import org.tron.common.utils.TransactionUtils;
 import org.tron.common.utils.Utils;
 import org.tron.core.config.Configuration;
 import org.tron.core.config.Parameter.CommonConstant;
-import org.tron.entity.EntityAccount;
-import org.tron.entity.EntityPassword;
+import org.tron.MyEntity.EntityAccount;
+import org.tron.MyEntity.EntityPassword;
 import org.tron.protos.Contract;
 import org.tron.protos.Contract.AssetIssueContract;
 import org.tron.protos.Contract.FreezeBalanceContract;
 import org.tron.protos.Contract.UnfreezeAssetContract;
 import org.tron.protos.Contract.UnfreezeBalanceContract;
 import org.tron.protos.Contract.WithdrawBalanceContract;
+import org.tron.protos.Protocol;
 import org.tron.protos.Protocol.Account;
 import org.tron.protos.Protocol.Block;
 import org.tron.protos.Protocol.Transaction;
@@ -295,13 +296,33 @@ public class WalletClient {
     if (transaction == null || transaction.getRawData().getContractCount() == 0) {
       return GrpcAPI.Return.newBuilder().setResult(false).setCode(GrpcAPI.Return.response_code.OTHER_ERROR).build();
     }
+    {
+      //verify transaction not modified
+      if(transaction.getRawData().getContractCount() > 1 ) {
+        return GrpcAPI.Return.newBuilder().setResult(false).setCode(GrpcAPI.Return.response_code.CONTRACT_VALIDATE_ERROR).build();
+      }
+      Protocol.Transaction.Contract contractWaitToVerify = transaction.getRawData().getContract(0);
+      try {
+        byte[] fromWaitToVerify = contractWaitToVerify.getParameter().unpack(Contract.TransferContract.class).getOwnerAddress().toByteArray();
+        byte[] toWaitToVerify = contractWaitToVerify.getParameter().unpack(Contract.TransferContract.class).getToAddress().toByteArray();
+        long amountWaitToVerify = contractWaitToVerify.getParameter().unpack(Contract.TransferContract.class).getAmount();
+        if(!Arrays.equals(fromWaitToVerify, owner)
+                || !Arrays.equals(toWaitToVerify, to)
+                || amount != amountWaitToVerify) {
+          return GrpcAPI.Return.newBuilder().setResult(false).setCode(GrpcAPI.Return.response_code.CONTRACT_VALIDATE_ERROR).build();
+        }
+      } catch (InvalidProtocolBufferException e) {
+        return GrpcAPI.Return.newBuilder().setResult(false).setCode(GrpcAPI.Return.response_code.CONTRACT_VALIDATE_ERROR).build();
+      }
+    }
+
     Transaction signedTransaction = signTransaction(transaction);
     System.out.println("--------------------------------");
     System.out.println(
         "txid = " + ByteArray.toHexString(Hash.sha256(transaction.getRawData().toByteArray())));
     System.out.println("--------------------------------");
     GrpcAPI.Return result =  rpcCli.broadcastTransaction(signedTransaction);
-    ShareData.pendingTransaction.add(transaction);
+    ShareData.pendingTransaction.add(signedTransaction);
     return result;
   }
 
@@ -443,6 +464,15 @@ public class WalletClient {
     }
     transaction = signTransaction(transaction);
     return rpcCli.broadcastTransaction(transaction);
+  }
+
+  public static Transaction createUnsignedVoteWitnessTransaction(byte[] owner, HashMap<String, String> witness) {
+    Contract.VoteWitnessContract contract = createVoteWitnessContract(owner, witness);
+    Transaction transaction = rpcCli.voteWitnessAccount(contract);
+    if (transaction == null || transaction.getRawData().getContractCount() == 0) {
+      return null;
+    }
+    return transaction;
   }
 
   public static Contract.TransferContract createTransferContract(byte[] to, byte[] owner,
@@ -706,7 +736,7 @@ public class WalletClient {
       logger.warn("Warning: Password is empty !!");
       return false;
     }
-    if (password.length() < 6) {
+    if (password.length() < org.tron.MyUtils.Config.PASS_MIN_LENGTH) {
       logger.warn("Warning: Password is too short !!");
       return false;
     }
@@ -736,12 +766,16 @@ public class WalletClient {
   }
 
   public static String encode58Check(byte[] input) {
-    byte[] hash0 = Hash.sha256(input);
-    byte[] hash1 = Hash.sha256(hash0);
-    byte[] inputCheck = new byte[input.length + 4];
-    System.arraycopy(input, 0, inputCheck, 0, input.length);
-    System.arraycopy(hash1, 0, inputCheck, input.length, 4);
-    return Base58.encode(inputCheck);
+    try {
+      byte[] hash0 = Hash.sha256(input);
+      byte[] hash1 = Hash.sha256(hash0);
+      byte[] inputCheck = new byte[input.length + 4];
+      System.arraycopy(input, 0, inputCheck, 0, input.length);
+      System.arraycopy(hash1, 0, inputCheck, input.length, 4);
+      return Base58.encode(inputCheck);
+    } catch (Exception e) {
+      return "";
+    }
   }
 
   private static byte[] decode58Check(String input) {
@@ -772,7 +806,13 @@ public class WalletClient {
           + " but " + addressBase58.length() + " !!");
       return null;
     }
-    byte[] address = decode58Check(addressBase58);
+    byte[] address = null;
+    try {
+      logger.info("decode58Check {}", addressBase58);
+      address = decode58Check(addressBase58);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     if (!addressValid(address)) {
       return null;
     }
@@ -826,14 +866,6 @@ public class WalletClient {
     return rpcCli.getAssetIssueListByTimestamp(timestamp);
   }
 
-  public static Optional<TransactionList> getTransactionsByTimestamp(long start, long end, int offset, int limit) {
-    return rpcCli.getTransactionsByTimestamp(start, end, offset, limit);
-  }
-
-  public static GrpcAPI.NumberMessage getTransactionsByTimestampCount(long start, long end) {
-    return rpcCli.getTransactionsByTimestampCount(start,end);
-  }
-
   public static Optional<AssetIssueList> getAssetIssueList() {
     return rpcCli.getAssetIssueList();
   }
@@ -866,16 +898,8 @@ public class WalletClient {
     return rpcCli.getTransactionsFromThis(address, offset, limit);
   }
 
-  public static GrpcAPI.NumberMessage   getTransactionsFromThisCount(byte[] address) {
-    return rpcCli.getTransactionsFromThisCount(address);
-  }
-
   public static Optional<TransactionList> getTransactionsToThis(byte[] address, int offset, int limit) {
     return rpcCli.getTransactionsToThis(address, offset, limit);
-  }
-
-  public static GrpcAPI.NumberMessage getTransactionsToThisCount(byte[] address) {
-    return rpcCli.getTransactionsToThisCount(address);
   }
 
   public static Optional<Transaction> getTransactionById(String txID) {

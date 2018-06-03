@@ -29,7 +29,7 @@
                     <children>
                         <Button layoutX="523.0" layoutY="360.0" maxWidth="80.0"
                                 mnemonicParsing="false"
-                                onAction="#cancelClicked" text="Cancel" HBox.hgrow="ALWAYS"/>
+                                onAction="#cancelClicked" text="Close" HBox.hgrow="ALWAYS"/>
                         <Button layoutX="523.0" layoutY="360.0" maxWidth="80.0"
                                 mnemonicParsing="false"
                                 onAction="#okClicked" text="OK" HBox.hgrow="ALWAYS"/>
@@ -58,30 +58,29 @@
                         </VBox>
                     </children>
                 </HBox>
-                <HBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="120"
-                      alignment="CENTER" spacing="20">
-                    <VBox spacing="5" alignment="CENTER_LEFT">
-                        <Label text="Name" prefHeight="27"/>
-                        <Label text="Total Supply" prefHeight="27"/>
-                        <Label text="Issuer" prefHeight="27"/>
-                        <Label text="Description" prefHeight="27"/>
-                        <Label text="Price" prefHeight="27"/>
-                        <Label text="Amount" prefHeight="27"/>
-                        <Label text="" prefHeight="54"/>
-                    </VBox>
-                    <VBox spacing="5" alignment="CENTER_LEFT">
-                        <Label fx:id="name" text="Name" prefHeight="27" maxWidth="500"/>
-                        <Label fx:id="totalSupply" text="Total Supply" prefHeight="27" maxWidth="500"/>
-                        <Label fx:id="issuer" text="Issuer" prefHeight="27" maxWidth="500"/>
-                        <Label fx:id="desc" text="Description" prefHeight="27" maxWidth="500"/>
-                        <Label fx:id="price" text="Price" prefHeight="27" maxWidth="500"/>
-                        <TextField fx:id="amount" prefWidth="400" maxWidth="500"/>
-                        <CheckBox fx:id="agree"
-                                  text="Confirmed to spend 0 TRX and get 0 tokens."
-                                  prefHeight="54" prefWidth="400" wrapText="true"/>
-                    </VBox>
+                <GridPane AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="100" AnchorPane.topAnchor="120" hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="150.0" prefWidth="150.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label text="Name" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Label text="Total Supply" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <Label text="Issuer" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <Label text="Description" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <Label text="Price" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <Label text="Amount" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
 
-                </HBox>
+                        <Label fx:id="name" text="Name" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label fx:id="totalSupply" text="Total Supply" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label fx:id="issuer" text="Issuer" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <Label fx:id="desc" text="Description" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                        <Label fx:id="price" text="Price" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                        <TextField fx:id="amount" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                        <CheckBox fx:id="agree" wrapText="true" text="Confirmed to spend 0 TRX and get 0 tokens."
+                                  GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
             </children>
             <effect>
                 <DropShadow/>

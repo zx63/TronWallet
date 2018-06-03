@@ -96,7 +96,7 @@
     -fx-text-subtitle-color: rgb(65.0, 65.0, 65.0);
     -fx-text-control-title-color: rgb(130.0, 130.0, 130.0);
     -fx-text-fill: -fx-text-base-color;
-    -dark: rgb(40.0, 40.0, 40.0);
+    -dark: rgb(60.0, 60.0, 60.0);
     -fx-background-color: -dark;
     /*default font */
     -fx-font-family: 'Roboto Medium';
@@ -362,6 +362,7 @@
  *                                                                             *
  ******************************************************************************/
 .combo-box .list-cell {
+    -fx-background-color: -dark;
     -fx-padding: 0.7em 0.7em 0.7em 0em;
 }
 
@@ -374,6 +375,7 @@
 }
 
 .title-bar {
+    -fx-padding: 10;
     -fx-padding: 10;
 }
 
@@ -405,38 +407,54 @@
  * Date Picker			                                                       *
  *                                                                             *
  ******************************************************************************/
-.date-picker-popup .button {
-    -fx-background-color: -swatch-500;
+.date-picker-popup {
+    -fx-border-color: transparent;
+    -fx-background-color: -dark;
 }
 
 .date-picker-popup > .month-year-pane {
-    -fx-background-color: -swatch-500;
-}
-
-.date-picker-popup > * > .spinner > .button > .left-arrow, .date-picker-popup > * > .spinner > .button > .right-arrow {
-    -fx-background-color: white;
-}
-
-.date-picker-popup > * > .spinner {
-    -fx-border-width: 0;
-}
-
-.date-picker-popup > * > .spinner > .label {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+    -fx-background-color: -dark;
 }
 
 .date-picker-popup > * > .day-name-cell, .date-picker-popup > * > .week-number-cell {
-    -fx-font-weight: normal;
-    -fx-text-fill: -swatch-dark-grey;
-    -fx-font-size: 1em;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
 }
 
-/*******************************************************************************
- *                                                                             *
- * Date picker						                                           *
- *                                                                             *
- ******************************************************************************/
+.date-picker-popup > .calendar-grid {
+    -fx-background-color:  -dark;
+    -fx-padding: 0;
+}
+
+.date-picker .combo-box {
+    -fx-background-insets: 0px;
+    -fx-border-width: 0px;
+}
+
+.date-picker .text-field {
+    -fx-background-radius: 0px;
+    -fx-border-color: transparent;
+}
+
+.date-picker-popup .button {
+    -fx-background-color: transparent;
+}
+
+.date-picker .cell {
+    -fx-background-color: -dark;
+    -fx-border-width: 0;
+}
+
+.date-picker .cell:hover {
+    -fx-background-color: -swatch-500;
+}
+
+.date-picker .cell:focused {
+    -fx-background-color: -swatch-500;
+}
+
 .date-picker .arrow-button {
     -fx-background-color: transparent;
 }
@@ -445,10 +463,10 @@
     -fx-background-insets: -4;
 }
 
-.date-picker .date-picker-display-node {
-    -fx-border-width: 0;
+.date-picker-popup > * > .previous-month,
+.date-picker-popup > * > .next-month {
+    -fx-text-fill: -dark;
 }
-
 /*******************************************************************************
  *                                                                             *
  * HTML Editor 				                       			  				   *
@@ -857,7 +875,8 @@
 }
 
 .tool-bar .combo-box-base, .menu-bar .combo-base {
-    -fx-border-width: 0;
+    -fx-background-insets: 0px;
+    -fx-border-width: 0px;
 }
 
 .tool-bar .button, .tool-bar .toggle-button {

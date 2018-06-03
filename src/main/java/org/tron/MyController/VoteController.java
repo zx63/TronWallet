@@ -3,17 +3,15 @@ package org.tron.MyController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tron.MyTableItem.EditCell;
-import org.tron.MyTableItem.VoteItem;
+import org.spongycastle.util.encoders.Hex;
+import org.tron.MyUiItem.EditCell;
+import org.tron.MyUiItem.VoteItem;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.ShareData;
 import org.tron.api.GrpcAPI;
@@ -93,27 +91,63 @@ public class VoteController {
     }
 
     public void submitClicked(ActionEvent actionEvent) {
+        account = ShareData.getAccount();
         HashMap<String, String> voteStatus = new HashMap<>();
         long totalVoteCount = 0;
         for (VoteItem voteDatum : voteData) {
-            long count = Long.valueOf(voteDatum.myVoteCount.get()) * Config.DROP_UNIT;
+            long count = Long.valueOf(voteDatum.myVoteCount.get());
             totalVoteCount += count;
-            voteStatus.put(voteDatum.address.get(), String.valueOf(count));
+            if (count > 0) {
+                voteStatus.put(voteDatum.address.get(), String.valueOf(count));
+            }
         }
         if (account.getFrozenCount() <= 0) {
             GuiUtils.informationalAlert("Not enought Tron Power", "Please frozen enought trx first");
             return;
         }
-        long frozenCount = account.getFrozenList().get(0).getFrozenBalance();
+        long frozenCount = account.getFrozenList().get(0).getFrozenBalance() / Config.DROP_UNIT;
         if (totalVoteCount > frozenCount) {
             GuiUtils.informationalAlert("Not enought Tron Power", "My Tron Power:"
-                    + (frozenCount / Config.DROP_UNIT)
+                    + (frozenCount)
                     + ", my vote count:"
-                    + (totalVoteCount / Config.DROP_UNIT));
+                    + (totalVoteCount));
             return;
         }
-        ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount) / Config.DROP_UNIT));
-        client.voteWitness(ShareData.getPassword(), voteStatus);
-        GuiUtils.informationalAlert("Success", "Thank you");
+        ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount)));
+        GrpcAPI.Return result = client.voteWitness(ShareData.getPassword(), voteStatus);
+        if (result.getResult()) {
+            GuiUtils.informationalAlert("Success", "Thank you");
+        } else {
+            GuiUtils.informationalAlert("Failed", result.getCode().toString());
+            return;
+        }
+    }
+
+    public void coldSubmitClicked(ActionEvent actionEvent) {
+        account = ShareData.getAccount();
+        HashMap<String, String> voteStatus = new HashMap<>();
+        long totalVoteCount = 0;
+        for (VoteItem voteDatum : voteData) {
+            long count = Long.valueOf(voteDatum.myVoteCount.get());
+            totalVoteCount += count;
+            if (count > 0) {
+                voteStatus.put(voteDatum.address.get(), String.valueOf(count));
+            }
+        }
+        if (account.getFrozenCount() <= 0) {
+            GuiUtils.informationalAlert("Not enought Tron Power", "Please frozen enought trx first");
+            return;
+        }
+        long frozenCount = account.getFrozenList().get(0).getFrozenBalance() / Config.DROP_UNIT;
+        if (totalVoteCount > frozenCount) {
+            GuiUtils.informationalAlert("Not enought Tron Power", "My Tron Power:"
+                    + (frozenCount)
+                    + ", my vote count:"
+                    + (totalVoteCount));
+            return;
+        }
+        ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount)));
+        Protocol.Transaction coldTransaction = client.createUnsignedVoteWitnessTransaction(ShareData.getAddress(), voteStatus);
+        String content = Hex.toHexString(coldTransaction.toByteArray());
     }
 }

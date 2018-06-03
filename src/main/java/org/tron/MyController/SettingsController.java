@@ -47,7 +47,6 @@ public class SettingsController {
         try {
             Files.copy(Paths.get(Config.WALLET_DB_FILE), Paths.get(Config.WALLET_DB_FILE_BAK), StandardCopyOption.REPLACE_EXISTING);
             GuiUtils.informationalAlert("Success", "The old wallet saved to " + Config.WALLET_DB_FILE_BAK);
-            Files.deleteIfExists(Paths.get(Config.WALLET_DB_FILE));
             Main.instance.reset();
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,7 +63,7 @@ public class SettingsController {
             return;
         }
         String password = newPassword.getText();
-        if (password.length() < 6) {
+        if (password.length() < Config.PASS_MIN_LENGTH) {
             GuiUtils.informationalAlert("Password too short", "You need to pick a password at least 6 characters or longer.");
             return;
         }
