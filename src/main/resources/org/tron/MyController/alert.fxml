@@ -7,16 +7,32 @@
 <?import javafx.scene.layout.*?>
 <GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="20.0"
           xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="org.tron.MyController.AlertWindowController">
+          fx:controller="org.tron.MyController.AlertWindowController" styleClass="root-float">
     <children>
-        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0"
+        <ImageView fx:id="msgIcon" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true"
+                   GridPane.columnIndex="0"
                    GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
             <image>
                 <Image url="@/images/msg.png"/>
                 <!-- place holder -->
             </image>
         </ImageView>
-        <VBox prefWidth="400.0" spacing="7.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <ImageView fx:id="lockIcon" visible="false" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true"
+                   preserveRatio="true" GridPane.columnIndex="0"
+                   GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
+            <image>
+                <Image url="@/images/lock.png"/>
+                <!-- place holder -->
+            </image>
+        </ImageView>
+        <VBox fx:id="passwordBox" visible="false" prefWidth="400.0" spacing="7.0" GridPane.columnIndex="1"
+              GridPane.rowIndex="0">
+            <children>
+                <Label fx:id="passwordTips" text="Please input password" textAlignment="LEFT" wrapText="true"/>
+                <PasswordField fx:id="password"/>
+            </children>
+        </VBox>
+        <VBox fx:id="msgBox" prefWidth="400.0" spacing="7.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <children>
                 <Label fx:id="messageLabel" text="message" textAlignment="LEFT" wrapText="true"/>
                 <Label fx:id="detailsLabel" text="details" textAlignment="LEFT" wrapText="true"/>

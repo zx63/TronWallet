@@ -34,7 +34,7 @@
                 </HBox>
 
                 <GridPane alignment="CENTER" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="100.0"
-                          AnchorPane.rightAnchor="100.0">
+                          AnchorPane.rightAnchor="100.0" vgap="10">
                     <columnConstraints>
                         <ColumnConstraints prefWidth="100.0"/>
                         <ColumnConstraints prefWidth="400.0"/>
@@ -42,15 +42,12 @@
                     <children>
                         <Label prefHeight="27" text="To" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                         <Label prefHeight="27" text="Amount" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                        <Label prefHeight="27" text="Passsword" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
 
                         <TextField fx:id="toAddress" promptText="to tron address" GridPane.rowIndex="0"
                                    GridPane.columnIndex="1"/>
                         <TextField fx:id="amount" promptText="0.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
                         <ComboBox fx:id="type" prefHeight="27.0" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-                        <PasswordField fx:id="password" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
                     </children>
                 </GridPane>

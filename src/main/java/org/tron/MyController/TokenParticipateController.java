@@ -1,5 +1,6 @@
 package org.tron.MyController;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -75,9 +76,17 @@ public class TokenParticipateController {
     }
 
     public void okClicked(ActionEvent actionEvent) {
+        SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
+        checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
+            okClickedAndChecked();
+        });
+        GuiUtils.checkPasswordAlert(checkPasswordProperty);
+    }
+
+    public void okClickedAndChecked() {
         if (agree.isSelected()) {
             long count = Long.parseLong(amount.getText());
-            if(count == 0) {
+            if (count == 0) {
                 return;
             }
             GrpcAPI.Return result = client.participateAssetIssue(ShareData.getPassword(), tokenItem.getIssuer(), tokenItem.getName(), count * Config.DROP_UNIT);

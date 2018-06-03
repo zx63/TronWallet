@@ -404,6 +404,7 @@ public class Client {
 
   public Protocol.Transaction createUnsignedVoteWitnessTransaction(String owner, HashMap<String, String> witness) {
     try {
+      System.out.println("createUnsignedVoteWitnessTransaction for " + owner);
       return WalletClient.createUnsignedVoteWitnessTransaction(WalletClient.decodeFromBase58Check(owner), witness);
     } catch (Exception ex) {
       ex.printStackTrace();

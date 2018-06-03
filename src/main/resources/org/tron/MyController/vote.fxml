@@ -18,6 +18,8 @@
                                 onAction="#reloadClicked" text="Reload" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false"
                                 onAction="#submitClicked" text="Submit Vote" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false"
+                                onAction="#coldSubmitClicked" text="Cold Wallet Vote" HBox.hgrow="ALWAYS"/>
                     </children>
                 </HBox>
                 <TableView fx:id="voteTableView" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

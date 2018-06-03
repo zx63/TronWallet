@@ -3,6 +3,7 @@ package org.tron.MyController;
 import com.google.common.base.Throwables;
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -40,6 +41,7 @@ public class GuiUtils {
             scene.getStylesheets().add(GuiUtils.class.getResource("wallet.css").toString());
 
             dialogStage.setScene(scene);
+
             dialogStage.showAndWait();
         } catch (IOException e) {
             // We crashed whilst trying to show the alert dialog (this should never happen). Give up!
@@ -73,6 +75,16 @@ public class GuiUtils {
         String formattedDetails = String.format(details, args);
         Runnable r = () -> runAlert((stage, controller) -> {
             controller.informational(stage, message, formattedDetails);
+        });
+        if (Platform.isFxApplicationThread())
+            r.run();
+        else
+            Platform.runLater(r);
+    }
+
+    public static void checkPasswordAlert(SimpleBooleanProperty passwordCheckProperty) {
+        Runnable r = () -> runAlert((stage, controller) -> {
+            controller.passwordCheck(stage, passwordCheckProperty);
         });
         if (Platform.isFxApplicationThread())
             r.run();

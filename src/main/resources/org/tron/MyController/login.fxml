@@ -37,10 +37,10 @@
                 <HBox fx:id="buttonsBox" alignment="CENTER_RIGHT" layoutX="272.0" layoutY="360.0" prefHeight="26.0"
                       prefWidth="561.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
                     <children>
-                        <Button fx:id="confirmButton" layoutX="523.0" layoutY="360.0" maxWidth="80.0"
-                                mnemonicParsing="false" onAction="#confirmClicked" text="Confirm" HBox.hgrow="ALWAYS"/>
                         <Button fx:id="closeButton" layoutX="523.0" layoutY="360.0" maxWidth="80.0"
                                 mnemonicParsing="false" onAction="#closeClicked" text="Close" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="confirmButton" layoutX="523.0" layoutY="360.0" maxWidth="80.0"
+                                mnemonicParsing="false" onAction="#confirmClicked" text="Confirm" HBox.hgrow="ALWAYS"/>
                     </children>
                 </HBox>
                 <GridPane fx:id="widgetGrid" layoutX="22.0" layoutY="146.0" prefHeight="114.0" prefWidth="561.0"

@@ -3,6 +3,7 @@ package org.tron.MyController;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -292,13 +293,21 @@ public class MainController implements Initializable {
 
     public void freezeClicked(ActionEvent actionEvent) {
         if (checkAccount()) {
-            Main.OverlayUI<FreezeController> screen = Main.instance.overlayUI("freeze.fxml");
+            SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
+            checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
+                Main.OverlayUI<FreezeController> screen = Main.instance.overlayUI("freeze.fxml");
+            });
+            GuiUtils.checkPasswordAlert(checkPasswordProperty);
         }
     }
 
     public void unfreezeClicked(ActionEvent actionEvent) {
         if (checkAccount()) {
-            Main.OverlayUI<UnfreezeController> screen = Main.instance.overlayUI("unfreeze.fxml");
+            SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
+            checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
+                Main.OverlayUI<UnfreezeController> screen = Main.instance.overlayUI("unfreeze.fxml");
+            });
+            GuiUtils.checkPasswordAlert(checkPasswordProperty);
         }
     }
 

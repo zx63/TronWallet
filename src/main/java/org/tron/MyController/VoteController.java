@@ -148,6 +148,7 @@ public class VoteController {
         }
         ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount)));
         Protocol.Transaction coldTransaction = client.createUnsignedVoteWitnessTransaction(ShareData.getAddress(), voteStatus);
-        String content = Hex.toHexString(coldTransaction.toByteArray());
+        Main.OverlayUI<ColdUnsignedVoteController> screen = Main.instance.overlayUI("cold_unsigned_vote.fxml");
+        screen.controller.initialize(coldTransaction);
     }
 }
