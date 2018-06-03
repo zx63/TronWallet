@@ -77,6 +77,9 @@ public class TokenParticipateController {
     public void okClicked(ActionEvent actionEvent) {
         if (agree.isSelected()) {
             long count = Long.parseLong(amount.getText());
+            if(count == 0) {
+                return;
+            }
             GrpcAPI.Return result = client.participateAssetIssue(ShareData.getPassword(), tokenItem.getIssuer(), tokenItem.getName(), count * Config.DROP_UNIT);
             if (result.getResult()) {
                 GuiUtils.informationalAlert("Success", "Get " + count + " " + tokenItem.getName());

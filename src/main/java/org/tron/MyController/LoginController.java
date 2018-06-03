@@ -67,4 +67,8 @@ public class LoginController {
             GuiUtils.informationalAlert("Wrong password", "The password you entered is wrong.");
         }
     }
+
+    public void closeClicked(ActionEvent actionEvent) {
+        Main.instance.stop();
+    }
 }
