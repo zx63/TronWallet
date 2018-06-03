@@ -17,7 +17,7 @@ import org.tron.protos.Protocol;
 import org.tron.walletcli.Client;
 import org.tron.walletserver.WalletClient;
 
-public class CreateTransactionController {
+public class CreateUnsignedTransactionController {
     public TextField toAddress;
     public TextField fromAddress;
     public TextField amount;
@@ -48,6 +48,8 @@ public class CreateTransactionController {
             byte[] to = WalletClient.decodeFromBase58Check(toAddress.getText());
             Contract.TransferContract contract = WalletClient.createTransferContract(to, from, Long.parseLong(amount.getText()) * Config.DROP_UNIT);
             Protocol.Transaction transaction = WalletClient.createTransaction4Transfer(contract);
+            transaction = transaction.toBuilder().setRawData(transaction.getRawData().toBuilder().setExpiration(System.currentTimeMillis() + 60 * 60 * 1000).build()).build();
+
 
             byte[] contentByte = transaction.toByteArray();
             String content = Hex.toHexString(contentByte);

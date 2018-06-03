@@ -1,6 +1,5 @@
 package org.tron.MyController;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -76,11 +75,7 @@ public class TokenParticipateController {
     }
 
     public void okClicked(ActionEvent actionEvent) {
-        SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
-        checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
-            okClickedAndChecked();
-        });
-        GuiUtils.checkPasswordAlert(checkPasswordProperty);
+        okClickedAndChecked();
     }
 
     public void okClickedAndChecked() {

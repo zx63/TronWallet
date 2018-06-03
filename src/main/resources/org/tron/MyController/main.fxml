@@ -217,11 +217,12 @@
 
             </children>
         </VBox>
-        <HBox fx:id="coldBox" alignment="CENTER" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="15"
-              AnchorPane.rightAnchor="15" AnchorPane.topAnchor="90.0">
+        <VBox fx:id="coldBox" alignment="CENTER" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="15"
+              AnchorPane.rightAnchor="15" AnchorPane.topAnchor="90.0" spacing="20">
             <children>
                 <Button onAction="#offlineSignClicked" prefHeight="54" prefWidth="400" text="Offline sign transaction"/>
+                <Button onAction="#offlineSignVoteClicked" prefHeight="54" prefWidth="400" text="Offline vote for Super Representatives"/>
             </children>
-        </HBox>
+        </VBox>
     </children>
 </AnchorPane>

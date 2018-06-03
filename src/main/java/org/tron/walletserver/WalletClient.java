@@ -469,6 +469,7 @@ public class WalletClient {
   public static Transaction createUnsignedVoteWitnessTransaction(byte[] owner, HashMap<String, String> witness) {
     Contract.VoteWitnessContract contract = createVoteWitnessContract(owner, witness);
     Transaction transaction = rpcCli.voteWitnessAccount(contract);
+    transaction = transaction.toBuilder().setRawData(transaction.getRawData().toBuilder().setExpiration(System.currentTimeMillis() + 60 * 60 * 1000).build()).build();
     if (transaction == null || transaction.getRawData().getContractCount() == 0) {
       return null;
     }

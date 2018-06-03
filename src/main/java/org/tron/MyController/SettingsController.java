@@ -6,12 +6,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.MyEntity.EntityColdWatch;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
+import org.tron.core.config.Parameter;
 import org.tron.walletcli.Client;
 
 import java.io.IOException;
@@ -43,7 +45,9 @@ public class SettingsController {
         }
         if (watchAddress != null) {
             EntityColdWatch coldWatchEntity = SQLiteUtil.getEntityColdWatch();
-            watchAddress.setText(coldWatchEntity.getAddress());
+            if (coldWatchEntity != null && StringUtils.isNotEmpty((coldWatchEntity.getAddress()))) {
+                watchAddress.setText(coldWatchEntity.getAddress());
+            }
         }
     }
 
@@ -95,6 +99,11 @@ public class SettingsController {
     }
 
     public void setWatch(ActionEvent actionEvent) {
+
+        if (StringUtils.length(watchAddress.getText()) != Parameter.CommonConstant.BASE58CHECK_ADDRESS_SIZE) {
+            GuiUtils.informationalAlert("Fail", "Not a tron address");
+            return;
+        }
         EntityColdWatch entityColdWatch = new EntityColdWatch(0, watchAddress.getText());
         SQLiteUtil.setColdWatchEntity(entityColdWatch);
         GuiUtils.informationalAlert("Success", "You can request offline sign and cold wallet vote now.");

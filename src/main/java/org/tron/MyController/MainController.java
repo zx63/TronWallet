@@ -3,7 +3,6 @@ package org.tron.MyController;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -17,7 +16,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -69,7 +67,7 @@ public class MainController implements Initializable {
     public TableColumn<TransactionItem, String> hashCol;
 
 
-    public HBox coldBox;
+    public VBox coldBox;
     public VBox hotBox;
 
     public TabPane tabPane;
@@ -293,21 +291,13 @@ public class MainController implements Initializable {
 
     public void freezeClicked(ActionEvent actionEvent) {
         if (checkAccount()) {
-            SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
-            checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
-                Main.OverlayUI<FreezeController> screen = Main.instance.overlayUI("freeze.fxml");
-            });
-            GuiUtils.checkPasswordAlert(checkPasswordProperty);
+            Main.OverlayUI<FreezeController> screen = Main.instance.overlayUI("freeze.fxml");
         }
     }
 
     public void unfreezeClicked(ActionEvent actionEvent) {
         if (checkAccount()) {
-            SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
-            checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
-                Main.OverlayUI<UnfreezeController> screen = Main.instance.overlayUI("unfreeze.fxml");
-            });
-            GuiUtils.checkPasswordAlert(checkPasswordProperty);
+            Main.OverlayUI<UnfreezeController> screen = Main.instance.overlayUI("unfreeze.fxml");
         }
     }
 
@@ -319,6 +309,10 @@ public class MainController implements Initializable {
 
     public void offlineSignClicked(ActionEvent actionEvent) {
         Main.OverlayUI<SignTransactionController> screen = Main.instance.overlayUI("sign_transaction_sign.fxml");
+    }
+
+    public void offlineSignVoteClicked(ActionEvent actionEvent) {
+        Main.OverlayUI<SignTransactionController> screen = Main.instance.overlayUI("sign_transaction_sign_vote.fxml");
     }
 
     public boolean checkAccount() {

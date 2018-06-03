@@ -1,6 +1,5 @@
 package org.tron.MyController;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -93,11 +92,7 @@ public class VoteController {
     }
 
     public void submitClicked(ActionEvent actionEvent) {
-        SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
-        GuiUtils.checkPasswordAlert(checkPasswordProperty);
-        checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
-            submitClickedAndChecked();
-        });
+        submitClickedAndChecked();
     }
 
     public void submitClickedAndChecked() {
@@ -166,8 +161,12 @@ public class VoteController {
             return;
         }
         ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount)));
-        Protocol.Transaction coldTransaction = client.createUnsignedVoteWitnessTransaction(coldWatch.getAddress(), voteStatus);
-        Main.OverlayUI<ColdUnsignedVoteController> screen = Main.instance.overlayUI("cold_unsigned_vote.fxml");
-        screen.controller.initialize(coldTransaction);
+        try {
+            Protocol.Transaction coldTransaction = client.createUnsignedVoteWitnessTransaction(coldWatch.getAddress(), voteStatus);
+            Main.OverlayUI<ColdUnsignedVoteController> screen = Main.instance.overlayUI("cold_unsigned_vote.fxml");
+            screen.controller.initialize(coldTransaction);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

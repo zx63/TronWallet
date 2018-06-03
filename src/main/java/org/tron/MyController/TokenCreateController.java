@@ -1,7 +1,6 @@
 package org.tron.MyController;
 
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -87,11 +86,7 @@ public class TokenCreateController {
     }
 
     public void okClicked(ActionEvent actionEvent) {
-        SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
-        checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
-            okClickedAndChecked();
-        });
-        GuiUtils.checkPasswordAlert(checkPasswordProperty);
+        okClickedAndChecked();
     }
 
     private void okClickedAndChecked() {
