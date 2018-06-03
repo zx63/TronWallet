@@ -10,9 +10,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.apache.commons.lang3.StringUtils;
 import org.spongycastle.util.encoders.Hex;
+import org.tron.MyEntity.EntityColdWatch;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.QRUtil;
+import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
 import org.tron.common.crypto.ECKey;
 import org.tron.common.utils.TransactionUtils;
@@ -20,8 +23,6 @@ import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
 import org.tron.walletcli.Client;
 import org.tron.walletserver.WalletClient;
-
-import java.util.Base64;
 
 public class SignTransactionController {
     public TextField toAddress;
@@ -73,6 +74,11 @@ public class SignTransactionController {
     }
 
     public void chooseCreate(ActionEvent actionEvent) {
+        EntityColdWatch coldWatch = SQLiteUtil.getEntityColdWatch();
+        if (coldWatch == null || StringUtils.isEmpty(coldWatch.getAddress())) {
+            GuiUtils.informationalAlert("No watched cold wallet address found", "Please add it in settings");
+            return;
+        }
         Main.OverlayUI<SignTransactionController> screen = Main.instance.overlayUI("sign_transaction_create.fxml");
     }
 

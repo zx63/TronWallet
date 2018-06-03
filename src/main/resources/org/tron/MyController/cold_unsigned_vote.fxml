@@ -28,8 +28,8 @@
                     </children>
                 </HBox>
 
-                <HBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="45" AnchorPane.leftAnchor="17"
-                      AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="50">
+                <HBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="17"
+                      AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80">
                     <ImageView fx:id="qrcode" fitHeight="300.0" fitWidth="300.0"/>
                     <Region HBox.hgrow="ALWAYS"/>
                     <VBox spacing="10">

@@ -8,10 +8,7 @@ import com.j256.ormlite.table.TableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.MyController.GuiUtils;
-import org.tron.MyEntity.EntityAccount;
-import org.tron.MyEntity.EntityBalance;
-import org.tron.MyEntity.EntityMeta;
-import org.tron.MyEntity.EntityPassword;
+import org.tron.MyEntity.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,6 +23,7 @@ public class SQLiteUtil {
     static Dao<EntityBalance, String> balanceDao;
     static Dao<EntityAccount, String> accountDao;
     static Dao<EntityPassword, Integer> passwordDao;
+    static Dao<EntityColdWatch, Integer> coldWatchDao;
 
 
     private SQLiteUtil() {
@@ -42,11 +40,13 @@ public class SQLiteUtil {
         TableUtils.createTableIfNotExists(connectionSource, EntityBalance.class);
         TableUtils.createTableIfNotExists(connectionSource, EntityAccount.class);
         TableUtils.createTableIfNotExists(connectionSource, EntityPassword.class);
+        TableUtils.createTableIfNotExists(connectionSource, EntityColdWatch.class);
 
         metaDao = DaoManager.createDao(connectionSource, EntityMeta.class);
         balanceDao = DaoManager.createDao(connectionSource, EntityBalance.class);
         accountDao = DaoManager.createDao(connectionSource, EntityAccount.class);
         passwordDao = DaoManager.createDao(connectionSource, EntityPassword.class);
+        coldWatchDao = DaoManager.createDao(connectionSource, EntityColdWatch.class);
     }
 
     public static void close() throws IOException {
@@ -111,6 +111,26 @@ public class SQLiteUtil {
     public static void setAccountEntity(EntityAccount entityAccount) {
         try {
             accountDao.createOrUpdate(entityAccount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static EntityColdWatch getEntityColdWatch() {
+        List<EntityColdWatch> list = null;
+        try {
+            list = coldWatchDao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    public static void setColdWatchEntity(EntityColdWatch entityColdWatch) {
+        try {
+            coldWatchDao.createOrUpdate(entityColdWatch);
         } catch (SQLException e) {
             e.printStackTrace();
         }

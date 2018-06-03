@@ -6,8 +6,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0"
-           prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
+<StackPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0" prefWidth="800.0"
+           xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="org.tron.MyController.BroadcastTransactionController">
     <children>
         <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
@@ -29,22 +29,34 @@
                         </Label>
                     </children>
                 </HBox>
-                <StackPane AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="110">
-                    <HBox fx:id="contentHbox" alignment="CENTER" spacing="15.0">
+                <StackPane AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="110">
+                    <HBox alignment="CENTER" spacing="15.0">
                         <children>
                             <VBox alignment="CENTER">
-                                <TextArea fx:id="signedText" prefHeight="150.0" prefWidth="400"
-                                          wrapText="true"
-                                          promptText="paste signed transaction hex text"/>
+                                <TextArea fx:id="signedText" prefHeight="200.0" prefWidth="400"
+                                          promptText="paste signed transaction hex text" wrapText="true"/>
                             </VBox>
-                            <VBox alignment="CENTER_LEFT" prefWidth="250.0" spacing="10">
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <StackPane>
                                 <children>
-                                    <TextField fx:id="fromAddress" editable="false" promptText="from tron address"/>
-                                    <TextField fx:id="toAddress" editable="false" promptText="to tron address"/>
-                                    <TextField fx:id="amount" editable="false" promptText="0.00 TRX"/>
-                                    <CheckBox fx:id="signed" disable="true" text="Signed"/>
+                                    <VBox fx:id="myTransactionBox" alignment="CENTER_LEFT" prefWidth="350.0"
+                                          spacing="10" visible="false">
+                                        <children>
+                                            <TextField fx:id="fromAddress" editable="false"
+                                                       promptText="from tron address"/>
+                                            <TextField fx:id="toAddress" editable="false" promptText="to tron address"/>
+                                            <TextField fx:id="amount" editable="false" promptText="0.00 TRX"/>
+                                        </children>
+                                    </VBox>
+                                    <TableView fx:id="myVoteView" prefHeight="200" prefWidth="450" visible="false">
+                                        <columns>
+                                            <TableColumn fx:id="addressCol" prefWidth="300.0" text="Address"/>
+                                            <TableColumn fx:id="myVoteCountCol" prefWidth="80.0" text="My Vote"/>
+                                        </columns>
+                                    </TableView>
+
                                 </children>
-                            </VBox>
+                            </StackPane>
                         </children>
                     </HBox>
                     <ImageView fx:id="qrcode" fitHeight="220.0" fitWidth="220.0" visible="false"/>
@@ -52,15 +64,14 @@
                 <HBox alignment="CENTER" spacing="100" AnchorPane.bottomAnchor="40" AnchorPane.leftAnchor="10"
                       AnchorPane.rightAnchor="10">
                     <children>
-                        <Button onAction="#broadcastClicked" text="Broadcast"
-                                textAlignment="CENTER" textOverrun="CLIP"
+                        <Button onAction="#broadcastClicked" text="Broadcast" textAlignment="CENTER" textOverrun="CLIP"
                                 wrapText="true"/>
-                        <Button onAction="#cancel" text="Cancel" cancelButton="true"
-                                textAlignment="CENTER"
-                                textOverrun="CLIP"
-                                wrapText="true"/>
+                        <Button cancelButton="true" onAction="#cancel" text="Cancel" textAlignment="CENTER"
+                                textOverrun="CLIP" wrapText="true"/>
                     </children>
                 </HBox>
+
+                <CheckBox fx:id="signed" disable="true" layoutX="149.0" layoutY="321.0" text="Signed"/>
             </children>
             <effect>
                 <DropShadow/>

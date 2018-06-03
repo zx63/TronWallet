@@ -1,5 +1,6 @@
 package org.tron.MyController;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,10 +10,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spongycastle.util.encoders.Hex;
+import org.tron.MyEntity.EntityColdWatch;
 import org.tron.MyUiItem.EditCell;
 import org.tron.MyUiItem.VoteItem;
 import org.tron.MyUtils.Config;
+import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
 import org.tron.api.GrpcAPI;
 import org.tron.protos.Protocol;
@@ -91,6 +93,14 @@ public class VoteController {
     }
 
     public void submitClicked(ActionEvent actionEvent) {
+        SimpleBooleanProperty checkPasswordProperty = new SimpleBooleanProperty(false);
+        GuiUtils.checkPasswordAlert(checkPasswordProperty);
+        checkPasswordProperty.addListener((observable, oldValue, newValue) -> {
+            submitClickedAndChecked();
+        });
+    }
+
+    public void submitClickedAndChecked() {
         account = ShareData.getAccount();
         HashMap<String, String> voteStatus = new HashMap<>();
         long totalVoteCount = 0;
@@ -124,11 +134,20 @@ public class VoteController {
     }
 
     public void coldSubmitClicked(ActionEvent actionEvent) {
+        EntityColdWatch coldWatch = SQLiteUtil.getEntityColdWatch();
+        if (coldWatch == null || StringUtils.isEmpty(coldWatch.getAddress())) {
+            GuiUtils.informationalAlert("No watched cold wallet address found", "Please add it in settings");
+            return;
+        }
         account = ShareData.getAccount();
         HashMap<String, String> voteStatus = new HashMap<>();
         long totalVoteCount = 0;
         for (VoteItem voteDatum : voteData) {
-            long count = Long.valueOf(voteDatum.myVoteCount.get());
+            long count = 0;
+            try {
+                count = Long.valueOf(voteDatum.myVoteCount.get());
+            } catch (Exception e) {
+            }
             totalVoteCount += count;
             if (count > 0) {
                 voteStatus.put(voteDatum.address.get(), String.valueOf(count));
@@ -147,7 +166,7 @@ public class VoteController {
             return;
         }
         ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount)));
-        Protocol.Transaction coldTransaction = client.createUnsignedVoteWitnessTransaction(ShareData.getAddress(), voteStatus);
+        Protocol.Transaction coldTransaction = client.createUnsignedVoteWitnessTransaction(coldWatch.getAddress(), voteStatus);
         Main.OverlayUI<ColdUnsignedVoteController> screen = Main.instance.overlayUI("cold_unsigned_vote.fxml");
         screen.controller.initialize(coldTransaction);
     }

@@ -3,15 +3,14 @@ package org.tron.MyController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tron.MyEntity.EntityColdWatch;
 import org.tron.MyUtils.Config;
+import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
 import org.tron.walletcli.Client;
 
@@ -27,7 +26,8 @@ public class SettingsController {
     public PasswordField password;
     public PasswordField newPassword;
     public PasswordField newPassword2;
-    public TextField privateKey;
+    public TextArea privateKey;
+    public TextField watchAddress;
 
     public HBox exportChangeHBox;
 
@@ -40,6 +40,10 @@ public class SettingsController {
     public void initialize() {
         if (password != null) {
             Platform.runLater(password::requestFocus);
+        }
+        if (watchAddress != null) {
+            EntityColdWatch coldWatchEntity = SQLiteUtil.getEntityColdWatch();
+            watchAddress.setText(coldWatchEntity.getAddress());
         }
     }
 
@@ -88,5 +92,11 @@ public class SettingsController {
         } else {
             GuiUtils.informationalAlert("Wrong password", "The password you entered is wrong.");
         }
+    }
+
+    public void setWatch(ActionEvent actionEvent) {
+        EntityColdWatch entityColdWatch = new EntityColdWatch(0, watchAddress.getText());
+        SQLiteUtil.setColdWatchEntity(entityColdWatch);
+        GuiUtils.informationalAlert("Success", "You can request offline sign and cold wallet vote now.");
     }
 }

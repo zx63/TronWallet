@@ -1,30 +1,26 @@
 package org.tron.MyController;
 
-import com.google.protobuf.Any;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.spongycastle.util.encoders.Hex;
+import org.tron.MyUiItem.MyVoteItem;
 import org.tron.MyUtils.Config;
-import org.tron.MyUtils.QRUtil;
-import org.tron.MyUtils.ShareData;
 import org.tron.api.GrpcAPI;
-import org.tron.common.utils.ByteArray;
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
 import org.tron.walletcli.Client;
 import org.tron.walletserver.WalletClient;
 
-import java.util.ArrayList;
-import java.util.Base64;
+import java.util.List;
 
 public class BroadcastTransactionController {
     public TextField toAddress;
@@ -35,10 +31,17 @@ public class BroadcastTransactionController {
 
     public PasswordField password;
     public ImageView qrcode;
-    public HBox contentHbox;
+    public VBox myTransactionBox;
+
 
     public Main.OverlayUI overlayUI;
     Client client = Client.getInstance();
+
+
+    public TableColumn<MyVoteItem, String> addressCol;
+    public TableColumn<MyVoteItem, String> myVoteCountCol;
+    public TableView<MyVoteItem> myVoteView;
+    private ObservableList<MyVoteItem> voteData = FXCollections.observableArrayList();
 
     Protocol.Transaction signedTransaction;
 
@@ -49,6 +52,8 @@ public class BroadcastTransactionController {
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     try {
                         signedTransaction = Protocol.Transaction.parseFrom(Hex.decode(newValue));
+                        myVoteView.setVisible(false);
+                        myTransactionBox.setVisible(false);
                         if (signedTransaction.getRawData().getContractCount() > 0) {
                             Protocol.Transaction.Contract contract = signedTransaction.getRawData().getContract(0);
                             if (contract.getType() == Protocol.Transaction.Contract.ContractType.TransferContract) {
@@ -59,11 +64,31 @@ public class BroadcastTransactionController {
                                 long amountValue = contract.getParameter().unpack(Contract.TransferContract.class)
                                         .getAmount() / Config.DROP_UNIT;
 
+                                myTransactionBox.setVisible(true);
                                 fromAddress.setText(WalletClient.encode58Check(from.toByteArray()));
                                 toAddress.setText(WalletClient.encode58Check(to.toByteArray()));
                                 amount.setText(String.valueOf(amountValue));
-                                signed.setSelected(signedTransaction.getSignatureCount() > 0);
+                            } else if (contract.getType() == Protocol.Transaction.Contract.ContractType.VoteWitnessContract) {
+                                try {
+                                    for (Protocol.Transaction.Contract signedContract : signedTransaction.getRawData().getContractList()) {
+                                        if (signedContract.getType() == Protocol.Transaction.Contract.ContractType.VoteWitnessContract) {
+                                            List<Contract.VoteWitnessContract.Vote> voteList = contract.getParameter().unpack(Contract.VoteWitnessContract.class).getVotesList();
+                                            for (Contract.VoteWitnessContract.Vote vote : voteList) {
+                                                voteData.add(new MyVoteItem(WalletClient.encode58Check(vote.getVoteAddress().toByteArray()), String.valueOf(vote.getVoteCount())));
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                myVoteView.setVisible(true);
+                                addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+                                myVoteCountCol.setCellValueFactory(new PropertyValueFactory<>("myVoteCount"));
+                                myVoteView.setItems(voteData);
+                                myVoteView.setEditable(true);
+                                myVoteView.refresh();
                             }
+                            signed.setSelected(signedTransaction.getSignatureCount() > 0);
                         }
                     } catch (Exception e) {
 

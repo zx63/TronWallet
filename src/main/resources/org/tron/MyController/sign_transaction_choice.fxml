@@ -27,7 +27,7 @@
                         <Button onAction="#chooseCreate"
                                 text="Create Unsigned Transaction"/>
                         <Button onAction="#chooseBroadcast"
-                                text="Load Hex Signed Transaction"/>
+                                text="Load Hex Signed Transaction or Vote"/>
                     </children>
                 </HBox>
             </children>
