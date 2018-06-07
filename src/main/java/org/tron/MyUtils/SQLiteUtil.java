@@ -66,7 +66,6 @@ public class SQLiteUtil {
 
     public static void setMetaEntity(EntityMeta entityMeta) {
         try {
-            metaDao.deleteBuilder().delete();
             metaDao.createOrUpdate(entityMeta);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -28,6 +28,7 @@ import org.tron.MyUiItem.TransactionItem;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.ShareData;
 import org.tron.common.crypto.Hash;
+import org.tron.common.crypto.Sha256Hash;
 import org.tron.common.utils.ByteArray;
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
@@ -342,7 +343,7 @@ public class MainController implements Initializable {
             String amount = null;
             ByteString typeByteString;
             String type = "";
-            String hash = ByteArray.toHexString(Hash.sha256(transaction.getRawData().toByteArray()));
+            String hash = ByteArray.toHexString(Sha256Hash.hash(transaction.getRawData().toByteArray()));
             int ccount = transaction.getRawData().getContractCount();
             if (ccount > 0) {
                 for (int j = 0; j < ccount; j++) {

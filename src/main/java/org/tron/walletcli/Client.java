@@ -162,7 +162,10 @@ public class Client {
     if (wallet.getEcKey() == null) {
       return WalletClient.getAddressByStorage();
     }
-    return WalletClient.encode58Check(wallet.getAddress());
+
+    String addressEncode58Check = WalletClient.encode58Check(wallet.getAddress());
+    logger.info("ShareData.setAddress {} {}", addressEncode58Check, wallet.getAddress());
+    return addressEncode58Check;
   }
 
   public Account queryAccount() {

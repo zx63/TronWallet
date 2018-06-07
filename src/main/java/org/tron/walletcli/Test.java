@@ -30,6 +30,7 @@ import java.util.Map;
 import org.tron.common.crypto.ECKey;
 import org.tron.common.crypto.ECKey.ECDSASignature;
 import org.tron.common.crypto.Hash;
+import org.tron.common.crypto.Sha256Hash;
 import org.tron.common.utils.Base58;
 import org.tron.common.utils.ByteArray;
 import org.tron.common.utils.Utils;
@@ -139,7 +140,7 @@ public class Test {
     byte[] msg = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8,
         9, 10, 11, 12, 13, 14, 15};
 
-    byte[] sha256 = Hash.sha256(msg);
+    byte[] sha256 = Sha256Hash.hash(msg);
     ECDSASignature signature = eCkey.sign(sha256);
 
     System.out.println("hash:::" + ByteArray.toHexString(sha256));
@@ -160,7 +161,7 @@ public class Test {
       ex.printStackTrace();
     }
     byte[] msg = transaction.getRawData().toByteArray();
-    byte[] sha256 = Hash.sha256(msg);
+    byte[] sha256 = Sha256Hash.hash(msg);
     eCkey.sign(sha256);
 
     ECDSASignature signature = eCkey.sign(sha256);
@@ -207,8 +208,8 @@ public class Test {
     byte[] hash = Hash.sha3(Arrays.copyOfRange(pubKey, 1, pubKey.length));
     byte[] hash_ = Hash.sha3(pubKey);
     byte[] address = eCkey.getAddress();
-    byte[] hash0 = Hash.sha256(address);
-    byte[] hash1 = Hash.sha256(hash0);
+    byte[] hash0 = Sha256Hash.hash(address);
+    byte[] hash1 = Sha256Hash.hash(hash0);
     byte[] checkSum = Arrays.copyOfRange(hash1, 0, 4);
     byte[] addchecksum = new byte[address.length + 4];
     System.arraycopy(address, 0, addchecksum, 0, address.length);
