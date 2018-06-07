@@ -4,6 +4,7 @@ import com.google.common.base.Throwables;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -82,7 +83,7 @@ public class GuiUtils {
             Platform.runLater(r);
     }
 
-    public static void checkPasswordAlert(SimpleBooleanProperty passwordCheckProperty) {
+    public static void checkPasswordAlert(SimpleStringProperty passwordCheckProperty) {
         Runnable r = () -> runAlert((stage, controller) -> {
             controller.passwordCheck(stage, passwordCheckProperty);
         });

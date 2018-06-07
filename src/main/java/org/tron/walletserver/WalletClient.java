@@ -41,9 +41,9 @@ import org.tron.protos.Protocol.Account;
 import org.tron.protos.Protocol.Block;
 import org.tron.protos.Protocol.Transaction;
 import org.tron.protos.Protocol.Witness;
-import sun.security.jca.JCAUtil;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -225,8 +225,9 @@ public class WalletClient {
     }
     byte[] salt0 = new byte[16];
     byte[] salt1 = new byte[16];
-    JCAUtil.getSecureRandom().nextBytes(salt0);
-    JCAUtil.getSecureRandom().nextBytes(salt1);
+    SecureRandom secureRandom = new SecureRandom();
+    secureRandom.nextBytes(salt0);
+    secureRandom.nextBytes(salt1);
     byte[] aseKey = getEncKey(password, salt0);
     byte[] pwd = getPassWord(password, salt1);
     byte[] privKeyPlain = ecKey.getPrivKeyBytes();

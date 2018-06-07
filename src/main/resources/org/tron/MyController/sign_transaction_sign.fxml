@@ -33,10 +33,10 @@
                     <HBox fx:id="contentHbox" alignment="CENTER" spacing="20.0">
                         <children>
                             <VBox alignment="CENTER">
-                                <TextArea fx:id="unSignedText" prefHeight="150.0" prefWidth="300"
+                                <TextArea fx:id="unSignedText" prefHeight="150.0" prefWidth="400"
                                           promptText="paste unsigned transaction hex text" wrapText="true"/>
                             </VBox>
-                            <VBox alignment="CENTER_LEFT" prefWidth="250.0" spacing="10">
+                            <VBox alignment="CENTER_LEFT" prefWidth="300.0" spacing="10">
                                 <children>
                                     <TextField fx:id="fromAddress" editable="false" promptText="from tron address"/>
                                     <TextField fx:id="toAddress" editable="false" promptText="to tron address"/>
@@ -63,15 +63,19 @@
                         </children>
                     </HBox>
                 </StackPane>
-                <HBox alignment="CENTER" spacing="100" AnchorPane.bottomAnchor="40" AnchorPane.leftAnchor="10"
-                      AnchorPane.rightAnchor="10">
+                <HBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20"
+                      AnchorPane.rightAnchor="20">
                     <children>
+                        <Button prefWidth="100" cancelButton="true" onAction="#cancel"
+                                text="Close"
+                                textAlignment="CENTER" textOverrun="CLIP" wrapText="true"/>
+                        <Region HBox.hgrow="ALWAYS"></Region>
+                        <Label text="Password"/>
+                        <PasswordField fx:id="password"/>
+
                         <Button prefWidth="100" onAction="#signClicked" text="Sign"
                                 textAlignment="CENTER"
                                 textOverrun="CLIP" wrapText="true"/>
-                        <Button prefWidth="100" cancelButton="true" onAction="#cancel"
-                                text="Cancel"
-                                textAlignment="CENTER" textOverrun="CLIP" wrapText="true"/>
                     </children>
                 </HBox>
             </children>

@@ -2,10 +2,7 @@ package org.tron.MyController;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +36,7 @@ public class TokenCreateController {
     public TextField forzenDay;
     public Label price;
     public Button ok;
+    public PasswordField password;
 
     public Protocol.Account account;
 
@@ -90,6 +88,10 @@ public class TokenCreateController {
     }
 
     private void okClickedAndChecked() {
+        if (!client.checkPassword(password.getText())) {
+            GuiUtils.informationalAlert("Failed", "Wrong password");
+            return;
+        }
         if (StringUtils.isEmpty(tokenName.getText())
                 || (StringUtils.length(tokenName.getText()) < 3)
                 || (StringUtils.length(tokenName.getText()) > 8)) {
@@ -243,7 +245,7 @@ public class TokenCreateController {
             HashMap<String, String> frozenSupply = new HashMap<>();
             frozenSupply.put(forzenAmount.getText(), forzenDay.getText());
 
-            GrpcAPI.Return result = client.assetIssue(ShareData.getPassword(),
+            GrpcAPI.Return result = client.assetIssue(password.getText(),
                     tokenName.getText(),
                     Long.parseLong(supply.getText()),
                     Integer.parseInt(trxAmount.getText()),

@@ -5,11 +5,11 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<StackPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0" prefWidth="800.0"
+<StackPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="500.0" prefWidth="800.0"
            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="org.tron.MyController.TokenCreateController">
     <children>
-        <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
+        <AnchorPane maxHeight="500.0" maxWidth="800.0" styleClass="root-float">
             <children>
                 <HBox alignment="CENTER_LEFT" layoutX="26.0" prefHeight="68.0" prefWidth="600.0"
                       styleClass="title-banner" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -85,6 +85,8 @@
                         <DatePicker fx:id="endDate" promptText="endDate" GridPane.columnIndex="2"
                                     GridPane.columnSpan="1" GridPane.rowIndex="7"/>
 
+                        <Label text="Password *" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+                        <PasswordField fx:id="password" GridPane.rowIndex="8" GridPane.columnIndex="1" GridPane.columnSpan="5"/>
                     </children>
                 </GridPane>
             </children>

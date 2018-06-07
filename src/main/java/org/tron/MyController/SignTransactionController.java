@@ -88,7 +88,13 @@ public class SignTransactionController {
 
     public void signClicked(ActionEvent actionEvent) {
         if (!signed.isSelected()) {
-            ECKey ecKey = ECKey.fromPrivate(Hex.decode(ShareData.getPrivateKey()));
+            Client client = Client.getInstance();
+            if (!client.checkPassword(password.getText())) {
+                GuiUtils.informationalAlert("Failed", "Wrong password");
+                return;
+            }
+//            ECKey ecKey = ECKey.fromPrivate(Hex.decode(ShareData.getPrivateKey()));
+            ECKey ecKey = ECKey.fromPrivate(Hex.decode(password.getText()));
             Protocol.Transaction signedTransaction = TransactionUtils.sign(unSignedTransaction, ecKey);
             byte[] contentByte = signedTransaction.toByteArray();
             String content = Hex.toHexString(contentByte);

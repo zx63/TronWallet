@@ -40,8 +40,8 @@ public class CreateWalletController {
         GuiUtils.fadeOut(widgetGrid);
         GuiUtils.fadeOut(explanationLabel);
         GuiUtils.fadeOut(okButton);
-        ShareData.setPassword(password);
-        Main.OverlayUI<CreateAccountController> screen = Main.instance.overlayUI("import_create.fxml");
+        Main.OverlayUI<ImportCreateAccountController> screen = Main.instance.overlayUI("import_create.fxml");
+        screen.controller.initialize(password);
     }
 
     public void closeClicked(ActionEvent event) {

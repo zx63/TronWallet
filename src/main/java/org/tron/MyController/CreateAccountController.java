@@ -22,6 +22,29 @@ public class CreateAccountController {
     public Main.OverlayUI overlayUI;
 
     boolean cold;
+    private String passwordTmp;
+
+    private void clearPassword() {
+        passwordTmp = "";
+    }
+
+    public void initialize(boolean cold, String passwordTmp) {
+        this.cold = cold;
+        this.passwordTmp = passwordTmp;
+
+        Client client = Client.getInstance();
+        client.registerWallet(passwordTmp);
+        client.login(passwordTmp);
+
+        String accountString = client.getAddress();
+
+        String privateKeyString = client.backupWallet(passwordTmp);
+        account.setText(accountString);
+        privateKey.setText(privateKeyString);
+
+        ShareData.setAddress(accountString);
+        clearPassword();
+    }
 
     @FXML
     public void okClicked(ActionEvent event) {
@@ -36,22 +59,4 @@ public class CreateAccountController {
         clipboard.setContent(clipboardContent);
     }
 
-    public void initialize(boolean cold) {
-        this.cold = cold;
-        String password = ShareData.getPassword();
-
-        Client client = Client.getInstance();
-        client.registerWallet(password);
-        client.login(password);
-
-        String accountString = client.getAddress();
-
-        String privateKeyString = client.backupWallet(ShareData.getPassword());
-        account.setText(accountString);
-        privateKey.setText(privateKeyString);
-
-        ShareData.setAddress(accountString);
-        ShareData.setPrivateKey(privateKeyString);
-
-    }
 }

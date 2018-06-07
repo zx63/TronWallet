@@ -70,6 +70,7 @@
                         <Label text="Description" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                         <Label text="Price" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
                         <Label text="Amount" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                        <Label text="Password" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
 
                         <Label fx:id="name" text="Name" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
                         <Label fx:id="totalSupply" text="Total Supply" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
@@ -77,8 +78,9 @@
                         <Label fx:id="desc" text="Description" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
                         <Label fx:id="price" text="Price" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
                         <TextField fx:id="amount" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                        <PasswordField fx:id="password" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
                         <CheckBox fx:id="agree" wrapText="true" text="Confirmed to spend 0 TRX and get 0 tokens."
-                                  GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                                  GridPane.rowIndex="7" GridPane.columnIndex="1"/>
                     </children>
                 </GridPane>
             </children>

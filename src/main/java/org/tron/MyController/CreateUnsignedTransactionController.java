@@ -46,7 +46,7 @@ public class CreateUnsignedTransactionController {
         try {
             byte[] from = WalletClient.decodeFromBase58Check(fromAddress.getText());
             byte[] to = WalletClient.decodeFromBase58Check(toAddress.getText());
-            Contract.TransferContract contract = WalletClient.createTransferContract(to, from, Long.parseLong(amount.getText()) * Config.DROP_UNIT);
+            Contract.TransferContract contract = WalletClient.createTransferContract(to, from, (long) (Double.parseDouble(amount.getText()) * Config.DROP_UNIT));
             Protocol.Transaction transaction = WalletClient.createTransaction4Transfer(contract);
             transaction = transaction.toBuilder().setRawData(transaction.getRawData().toBuilder().setExpiration(System.currentTimeMillis() + 60 * 60 * 1000).build()).build();
 

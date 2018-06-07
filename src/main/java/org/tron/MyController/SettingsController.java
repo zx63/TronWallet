@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.tron.MyEntity.EntityColdWatch;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.SQLiteUtil;
-import org.tron.MyUtils.ShareData;
 import org.tron.core.config.Parameter;
 import org.tron.walletcli.Client;
 
@@ -39,7 +38,14 @@ public class SettingsController {
     public GridPane widgetGrid;
     public Label explanationLabel;
 
-    public void initialize() {
+    private String passwordTmp;
+
+    private void clearPassword() {
+        passwordTmp = "";
+    }
+
+    public void initialize(String passwordTmp) {
+        this.passwordTmp = passwordTmp;
         if (password != null) {
             Platform.runLater(password::requestFocus);
         }
@@ -52,6 +58,7 @@ public class SettingsController {
     }
 
     public void resetClicked(ActionEvent actionEvent) {
+        clearPassword();
         try {
             Files.copy(Paths.get(Config.WALLET_DB_FILE), Paths.get(Config.WALLET_DB_FILE_BAK), StandardCopyOption.REPLACE_EXISTING);
             GuiUtils.informationalAlert("Success", "The old wallet saved to " + Config.WALLET_DB_FILE_BAK);
@@ -62,7 +69,7 @@ public class SettingsController {
     }
 
     public void exportClicked(ActionEvent actionEvent) {
-        privateKey.setText(ShareData.getPrivateKey());
+        privateKey.setText(Client.getInstance().backupWallet(passwordTmp));
     }
 
     public void confirmChangePasswordClicked(ActionEvent actionEvent) {
@@ -70,16 +77,16 @@ public class SettingsController {
             GuiUtils.informationalAlert("Passwords do not match", "Try re-typing your chosen passwords.");
             return;
         }
-        String password = newPassword.getText();
-        if (password.length() < Config.PASS_MIN_LENGTH) {
+        String newPasswordValue = newPassword.getText();
+        if (newPasswordValue.length() < Config.PASS_MIN_LENGTH) {
             GuiUtils.informationalAlert("Password too short", "You need to pick a password at least 6 characters or longer.");
             return;
         }
 
         Client client = Client.getInstance();
-        if (client.changePassword(ShareData.getPassword(), password)) {
+        if (client.changePassword(passwordTmp, newPasswordValue)) {
             GuiUtils.informationalAlert("Success", "Password changed");
-            ShareData.setPassword(password);
+//            ShareData.setPassword(password);
             overlayUI.done();
         } else {
             GuiUtils.informationalAlert("Fail", "Password change failed");
@@ -87,12 +94,15 @@ public class SettingsController {
     }
 
     public void cancelClicked(ActionEvent actionEvent) {
+        clearPassword();
         overlayUI.done();
     }
 
     public void nextClicked(ActionEvent actionEvent) {
-        if (ShareData.getPassword().equals(password.getText())) {
+//        if (ShareData.getPassword().equals(password.getText())) {
+        if (Client.getInstance().checkPassword(password.getText())) {
             Main.OverlayUI<SettingsController> screen = Main.instance.overlayUI("settings.fxml");
+            screen.controller.initialize(password.getText());
         } else {
             GuiUtils.informationalAlert("Wrong password", "The password you entered is wrong.");
         }

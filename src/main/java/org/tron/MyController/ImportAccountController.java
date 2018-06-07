@@ -34,16 +34,25 @@ public class ImportAccountController {
     @FXML
     Label explanationLabel;
 
-
     boolean cold;
 
-    public void initialize(boolean cold) {
+    private String passwordTmp;
+
+    private void clearPassword() {
+        passwordTmp = "";
+    }
+
+    public void initialize(String passwordTmp) {
+
+    }
+    public void initialize(boolean cold, String passwordTmp) {
         Platform.runLater(privateKey::requestFocus);
         this.cold = cold;
+        this.passwordTmp = passwordTmp;
     }
 
     @FXML
-    void confirmClicked(ActionEvent event) {
+    public void confirmClicked(ActionEvent event) {
         ShareData.isCold.set(cold);
         String privateKeyString = privateKey.getText();
         if (privateKeyString.isEmpty()) {
@@ -52,17 +61,18 @@ public class ImportAccountController {
         }
 
         Client client = Client.getInstance();
-        if(client.importWallet(ShareData.getPassword(), privateKeyString)) {
-            client.login(ShareData.getPassword());
+        if(client.importWallet(passwordTmp, privateKeyString)) {
+            client.login(passwordTmp);
             Protocol.Account account = client.queryAccount();
 //            ShareData.setBalance(String.valueOf(account.getBalance() / Config.DROP_UNIT));
-            ShareData.setPrivateKey(privateKeyString);
+//            ShareData.setPrivateKey(privateKeyString);
             ShareData.setAddress(client.getAddress());
 
             GuiUtils.fadeOut(widgetGrid);
             GuiUtils.fadeOut(explanationLabel);
             GuiUtils.fadeOut(buttonsBox);
             overlayUI.done();
+            clearPassword();
             return;
         }
         GuiUtils.informationalAlert("Bad private key", "The private key you entered is incorrect.");

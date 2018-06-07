@@ -30,10 +30,10 @@ public class ShareData {
     public static boolean isLogin = false;
     public static SimpleObjectProperty<Boolean> isCold = new SimpleObjectProperty<>(false);
 
-    private static String TAG_PASSWORD = "tag_password";
+//    private static String TAG_PASSWORD = "tag_password";
     private static String TAG_ADDRESS = "tag_address";
     private static String TAG_ACCOUNT = "tag_account";
-    private static String TAG_PRIVATE_KEY = "tag_private_key";
+//    private static String TAG_PRIVATE_KEY = "tag_private_key";
     private static String TAG_BALANCE = "tag_balance";
     private static String TAG_FROZEN_BALANCE = "tag_frozen_balance";
     private static String TAG_VOTE_COUNT = "tag_vote_count";
@@ -45,13 +45,13 @@ public class ShareData {
 
     private static Map<String, Object> data = new HashMap<>();
 
-    public static String getPassword() {
-        return (String) data.get(TAG_PASSWORD);
-    }
-
-    public static void setPassword(String password) {
-        data.put(TAG_PASSWORD, password);
-    }
+//    public static String getPassword() {
+//        return (String) data.get(TAG_PASSWORD);
+//    }
+//
+//    public static void setPassword(String password) {
+//        data.put(TAG_PASSWORD, password);
+//    }
 
     public static String getAddress() {
         return (String) data.get(TAG_ADDRESS);
@@ -92,13 +92,13 @@ public class ShareData {
         data.put(TAG_ACCOUNT, account);
     }
 
-    public static String getPrivateKey() {
-        return (String) data.get(TAG_PRIVATE_KEY);
-    }
-
-    public static void setPrivateKey(String privateKey) {
-        data.put(TAG_PRIVATE_KEY, privateKey);
-    }
+//    public static String getPrivateKey() {
+//        return (String) data.get(TAG_PRIVATE_KEY);
+//    }
+//
+//    public static void setPrivateKey(String privateKey) {
+//        data.put(TAG_PRIVATE_KEY, privateKey);
+//    }
 
     public static String getFrozenBalance() {
         return (String) data.get(TAG_FROZEN_BALANCE);
@@ -184,10 +184,11 @@ public class ShareData {
             }
             try {
                 Client client = Client.getInstance();
-                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
-                    return;
-                }
-                if (client.login(ShareData.getPassword())) {
+//                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
+//                    return;
+//                }
+//                if (client.login(ShareData.getPassword())) {
+                if (ShareData.isLogin) {
                     Protocol.Account account = client.queryAccount();
                     if (client.getAddress() == null || client.getAddress().isEmpty()) {
                         return;
@@ -238,15 +239,16 @@ public class ShareData {
             }
             try {
                 Client client = Client.getInstance();
-                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
-                    return;
-                }
-                if (client.login(ShareData.getPassword())) {
-                    if (client.getAddress() == null || client.getAddress().isEmpty()) {
+//                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
+//                    return;
+//                }
+//                if (client.login(ShareData.getPassword())) {
+                if (ShareData.isLogin) {
+                    if (ShareData.getAddress() == null || ShareData.getAddress().isEmpty()) {
                         return;
                     }
 
-                    byte[] addressBytes = WalletClient.decodeFromBase58Check(client.getAddress());
+                    byte[] addressBytes = WalletClient.decodeFromBase58Check(ShareData.getAddress());
                     if (addressBytes == null) {
                         return;
                     }
@@ -303,15 +305,15 @@ public class ShareData {
             }
             try {
                 Client client = Client.getInstance();
-                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
-                    return;
-                }
-                if (client.login(ShareData.getPassword())) {
-                    if (client.getAddress() == null || client.getAddress().isEmpty()) {
+//                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
+//                    return;
+//                }
+                if (ShareData.isLogin) {
+                    if (ShareData.getAddress() == null || ShareData.getAddress().isEmpty()) {
                         return;
                     }
 
-                    byte[] addressBytes = WalletClient.decodeFromBase58Check(client.getAddress());
+                    byte[] addressBytes = WalletClient.decodeFromBase58Check(ShareData.getAddress());
                     if (addressBytes == null) {
                         return;
                     }
@@ -368,14 +370,14 @@ public class ShareData {
             }
             try {
                 Client client = Client.getInstance();
-                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
-                    return;
-                }
-                if (client.login(ShareData.getPassword())) {
-                    if (client.getAddress() == null || client.getAddress().isEmpty()) {
-                        return;
-                    }
-
+//                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
+//                    return;
+//                }
+//                if (client.login(ShareData.getPassword())) {
+//                    if (client.getAddress() == null || client.getAddress().isEmpty()) {
+//                        return;
+//                    }
+                if (ShareData.isLogin) {
                     GrpcAPI.AssetIssueList tokenList = client.getAssetIssueList().get();
 
                     if (tokenList != null) {
@@ -396,14 +398,14 @@ public class ShareData {
             }
             try {
                 Client client = Client.getInstance();
-                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
-                    return;
-                }
-                if (client.login(ShareData.getPassword())) {
-                    if (client.getAddress() == null || client.getAddress().isEmpty()) {
-                        return;
-                    }
-
+//                if (ShareData.getPassword() == null || ShareData.getPassword().isEmpty()) {
+//                    return;
+//                }
+//                if (client.login(ShareData.getPassword())) {
+//                    if (client.getAddress() == null || client.getAddress().isEmpty()) {
+//                        return;
+//                    }
+                if (ShareData.isLogin) {
                     GrpcAPI.WitnessList witnessList = client.listWitnesses().get();
                     if (witnessList == null) {
                         return;

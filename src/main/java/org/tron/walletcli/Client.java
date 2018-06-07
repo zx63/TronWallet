@@ -88,6 +88,10 @@ public class Client {
     return importWallet(newPassword, priKey);
   }
 
+  public boolean checkPassword(String password) {
+    return wallet != null ? wallet.checkPassWord(password) : false;
+  }
+
   public boolean login(String password) {
     if(ShareData.isLogin) {
       return true;
@@ -162,13 +166,13 @@ public class Client {
   }
 
   public Account queryAccount() {
-    if (wallet == null || !wallet.isLoginState()) {
-      logger.warn("Warning: QueryAccount failed,  Please login first !!");
-      return null;
-    }
+//    if (wallet == null || !wallet.isLoginState()) {
+//      logger.warn("Warning: QueryAccount failed,  Please login first !!");
+//      return null;
+//    }
 
     try {
-      return wallet.queryAccount();
+      return wallet.queryAccount(WalletClient.decodeFromBase58Check(ShareData.getAddress()));
     } catch (Exception ex) {
       ex.printStackTrace();
       return null;

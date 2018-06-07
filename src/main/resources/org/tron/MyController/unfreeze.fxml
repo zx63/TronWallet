@@ -40,7 +40,17 @@
                         <Label text="After this period you can unfreeze the TRX and trade the tokens."/>
                     </children>
                 </VBox>
-                <HBox spacing="10.0" alignment="CENTER" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="100.0"
+                <GridPane AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="100" AnchorPane.bottomAnchor="80" hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="150.0" prefWidth="150.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label text="Password" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                        <PasswordField fx:id="password" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+                <HBox spacing="10.0" alignment="CENTER" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="100.0"
                       AnchorPane.rightAnchor="100">
                     <children>
                         <VBox>

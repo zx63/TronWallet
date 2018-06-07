@@ -32,7 +32,6 @@ public class LoginController {
 
     public void initialize() {
         Platform.runLater(password::requestFocus);
-
     }
 
     @FXML
@@ -45,8 +44,8 @@ public class LoginController {
 
         Client client = Client.getInstance();
         if (client.login(passwordString)) {
-            ShareData.setPassword(passwordString);
-            ShareData.setPrivateKey(client.backupWallet(passwordString));
+//            ShareData.setPassword(passwordString);
+//            ShareData.setPrivateKey(client.backupWallet(passwordString));
             GuiUtils.fadeOut(widgetGrid);
             GuiUtils.fadeOut(explanationLabel);
             GuiUtils.fadeOut(buttonsBox);

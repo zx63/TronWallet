@@ -1,6 +1,7 @@
 package org.tron.MyController;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -52,7 +53,7 @@ public class AlertWindowController {
     /**
      * Initialize this alert for general information: OK button only, nothing happens on dismissal.
      */
-    public void passwordCheck(Stage stage, SimpleBooleanProperty checkBooleanProperty) {
+    public void passwordCheck(Stage stage, SimpleStringProperty checkProperty) {
         msgBox.setVisible(false);
         msgIcon.setVisible(false);
         passwordBox.setVisible(true);
@@ -66,7 +67,7 @@ public class AlertWindowController {
                 return;
             }
             stage.close();
-            checkBooleanProperty.set(true);
+            checkProperty.set(password.getText());
         });
         cancelButton.setVisible(true);
         cancelButton.setOnAction(actionEvent -> {

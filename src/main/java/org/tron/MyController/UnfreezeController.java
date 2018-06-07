@@ -2,6 +2,7 @@ package org.tron.MyController;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.MyUtils.ShareData;
@@ -17,6 +18,7 @@ public class UnfreezeController {
 
     public Label frozen;
     public Label balance;
+    public PasswordField password;
 
     String count = "0";
 
@@ -37,7 +39,11 @@ public class UnfreezeController {
 
     public void okClicked(ActionEvent actionEvent) {
         Client client = Client.getInstance();
-        GrpcAPI.Return result = client.unfreezeBalance(ShareData.getPassword());
+        if (!client.checkPassword(password.getText())) {
+            GuiUtils.informationalAlert("Failed", "Wrong password");
+            return;
+        }
+        GrpcAPI.Return result = client.unfreezeBalance(password.getText());
         if (result.getResult()) {
             GuiUtils.informationalAlert("Success", "Unfreeze " + count + " TRX");
         } else {

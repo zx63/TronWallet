@@ -5,16 +5,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<StackPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0" prefWidth="800.0"
+<StackPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="500.0" prefWidth="800.0"
            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="org.tron.MyController.ColdUnsignedVoteController">
+           fx:controller="org.tron.MyController.ColdSignVoteController">
     <children>
-        <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
+        <AnchorPane maxHeight="500.0" maxWidth="800.0" styleClass="root-float">
             <children>
                 <HBox alignment="CENTER_LEFT" layoutX="26.0" prefHeight="48.0" prefWidth="600.0"
                       styleClass="title-banner" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <children>
-                        <Label maxHeight="1.7976931348623157E308" styleClass="title-label" text="Cold Wallet Vote">
+                        <Label maxHeight="1.7976931348623157E308" styleClass="title-label"
+                               text="Sign For Representatives Vote">
                             <font>
                                 <Font size="30.0"/>
                             </font>
@@ -28,7 +29,13 @@
                     </children>
                 </HBox>
 
-                <HBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="17"
+                <TextArea fx:id="unsignedHexText" prefHeight="200" prefWidth="300" visible="true"
+                          promptText="Please paste unigned pepresentatives vote hex string" wrapText="true"
+                          AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="17"
+                          AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80"/>
+
+                <HBox fx:id="signedHBox" alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="60"
+                      AnchorPane.leftAnchor="17" visible="false"
                       AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="80">
                     <ImageView fx:id="qrcode" fitHeight="300.0" fitWidth="300.0"/>
                     <Region HBox.hgrow="ALWAYS"/>
@@ -37,20 +44,25 @@
                             <TableView fx:id="myVoteView" prefHeight="200" prefWidth="450">
                                 <columns>
                                     <TableColumn fx:id="addressCol" prefWidth="350.0" text="Address"/>
-                                    <TableColumn fx:id="myVoteCountCol" prefWidth="80.0" text="My Vote"/>
+                                    <TableColumn fx:id="myVoteCountCol" prefWidth="70.0" text="My Vote"/>
                                 </columns>
                             </TableView>
-                            <TextArea fx:id="myVoteHexText" wrapText="true" editable="false" prefHeight="200"
-                                      prefWidth="450"
-                                      promptText="Unsigned Vote Contract"/>
+                            <TextArea fx:id="signedHexText" editable="false" prefHeight="200" prefWidth="450"
+                                      wrapText="true"/>
                         </children>
                     </VBox>
                 </HBox>
-                <HBox alignment="CENTER_RIGHT" layoutX="272.0" layoutY="360.0" prefHeight="26.0" prefWidth="561.0"
+                <HBox alignment="CENTER_RIGHT" AnchorPane.leftAnchor="17"
                       spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
                     <children>
-                        <Button fx:id="okButton" defaultButton="true" layoutX="523.0" layoutY="360.0" maxWidth="80.0"
-                                mnemonicParsing="false" onAction="#close" text="OK" HBox.hgrow="ALWAYS"/>
+
+                        <Button layoutX="523.0" layoutY="360.0" maxWidth="80.0" onAction="#close" text="Close"
+                                HBox.hgrow="ALWAYS"/>
+                        <Region HBox.hgrow="ALWAYS"></Region>
+                        <Label text="Password"/>
+                        <PasswordField fx:id="password"/>
+                        <Button layoutX="523.0" layoutY="360.0" maxWidth="80.0" onAction="#sign" text="Sign"
+                                HBox.hgrow="ALWAYS"/>
                     </children>
                 </HBox>
             </children>

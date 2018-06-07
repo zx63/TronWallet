@@ -17,12 +17,11 @@ import org.tron.walletserver.WalletClient;
 
 import java.util.List;
 
-public class ColdUnsignedVoteController {
+public class CreateUnsignedVoteController {
     public ImageView qrcode;
     public TextArea myVoteHexText;
     public Main.OverlayUI overlayUI;
     Protocol.Transaction coldTransaction;
-
 
     public TableColumn<MyVoteItem, String> addressCol;
     public TableColumn<MyVoteItem, String> myVoteCountCol;
@@ -55,6 +54,10 @@ public class ColdUnsignedVoteController {
     }
 
     public void close(ActionEvent actionEvent) {
+        overlayUI.done();
+    }
+
+    public void cancel(ActionEvent actionEvent) {
         overlayUI.done();
     }
 }

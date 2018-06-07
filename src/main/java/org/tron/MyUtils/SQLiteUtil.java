@@ -18,13 +18,11 @@ public class SQLiteUtil {
     static ConnectionSource connectionSource;
     static final Logger logger = LoggerFactory.getLogger(SQLiteUtil.class);
 
-
     static Dao<EntityMeta, String> metaDao;
     static Dao<EntityBalance, String> balanceDao;
     static Dao<EntityAccount, String> accountDao;
     static Dao<EntityPassword, Integer> passwordDao;
     static Dao<EntityColdWatch, Integer> coldWatchDao;
-
 
     private SQLiteUtil() {
     }
@@ -68,6 +66,7 @@ public class SQLiteUtil {
 
     public static void setMetaEntity(EntityMeta entityMeta) {
         try {
+            metaDao.deleteBuilder().delete();
             metaDao.createOrUpdate(entityMeta);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,6 +88,7 @@ public class SQLiteUtil {
 
     public static void setPasswordEntity(EntityPassword entityPassword) {
         try {
+            passwordDao.deleteBuilder().delete();
             passwordDao.createOrUpdate(entityPassword);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,6 +115,7 @@ public class SQLiteUtil {
             e.printStackTrace();
         }
     }
+
     public static EntityColdWatch getEntityColdWatch() {
         List<EntityColdWatch> list = null;
         try {

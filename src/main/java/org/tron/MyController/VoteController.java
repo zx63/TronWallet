@@ -1,5 +1,7 @@
 package org.tron.MyController;
 
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -96,36 +98,48 @@ public class VoteController {
     }
 
     public void submitClickedAndChecked() {
-        account = ShareData.getAccount();
-        HashMap<String, String> voteStatus = new HashMap<>();
-        long totalVoteCount = 0;
-        for (VoteItem voteDatum : voteData) {
-            long count = Long.valueOf(voteDatum.myVoteCount.get());
-            totalVoteCount += count;
-            if (count > 0) {
-                voteStatus.put(voteDatum.address.get(), String.valueOf(count));
+        SimpleStringProperty passwordResult = new SimpleStringProperty();
+        passwordResult.addListener((observable, oldValue, newValue) -> {
+            if (StringUtils.isNotEmpty(newValue)) {
+                String password = newValue;
+                account = ShareData.getAccount();
+                HashMap<String, String> voteStatus = new HashMap<>();
+                long totalVoteCount = 0;
+                for (VoteItem voteDatum : voteData) {
+                    long count = Long.valueOf(voteDatum.myVoteCount.get());
+                    totalVoteCount += count;
+                    if (count > 0) {
+                        voteStatus.put(voteDatum.address.get(), String.valueOf(count));
+                    }
+                }
+                if (account.getFrozenCount() <= 0) {
+                    Platform.runLater(() -> GuiUtils.informationalAlert("Not enought Tron Power", "Please frozen enought trx first"));
+                    return;
+                }
+                long frozenCount = account.getFrozenList().get(0).getFrozenBalance() / Config.DROP_UNIT;
+                if (totalVoteCount > frozenCount) {
+                    long finalTotalVoteCount = totalVoteCount;
+                    Platform.runLater(() -> {
+                        GuiUtils.informationalAlert("Not enought Tron Power", "My Tron Power:" + (frozenCount) + ", my vote count:" + (finalTotalVoteCount));
+                    });
+                    return;
+                }
+                ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount)));
+                GrpcAPI.Return result = client.voteWitness(password, voteStatus);
+                if (result.getResult()) {
+                    Platform.runLater(() -> {
+                        GuiUtils.informationalAlert("Success", "Thank you");
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        GuiUtils.informationalAlert("Failed", result.getCode().toString());
+                    });
+                    return;
+                }
             }
-        }
-        if (account.getFrozenCount() <= 0) {
-            GuiUtils.informationalAlert("Not enought Tron Power", "Please frozen enought trx first");
-            return;
-        }
-        long frozenCount = account.getFrozenList().get(0).getFrozenBalance() / Config.DROP_UNIT;
-        if (totalVoteCount > frozenCount) {
-            GuiUtils.informationalAlert("Not enought Tron Power", "My Tron Power:"
-                    + (frozenCount)
-                    + ", my vote count:"
-                    + (totalVoteCount));
-            return;
-        }
-        ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount)));
-        GrpcAPI.Return result = client.voteWitness(ShareData.getPassword(), voteStatus);
-        if (result.getResult()) {
-            GuiUtils.informationalAlert("Success", "Thank you");
-        } else {
-            GuiUtils.informationalAlert("Failed", result.getCode().toString());
-            return;
-        }
+        });
+        GuiUtils.checkPasswordAlert(passwordResult);
+
     }
 
     public void coldSubmitClicked(ActionEvent actionEvent) {
@@ -163,9 +177,9 @@ public class VoteController {
         ShareData.tronPowerTmpSimpleObjectProperty.set(String.valueOf((frozenCount - totalVoteCount)));
         try {
             Protocol.Transaction coldTransaction = client.createUnsignedVoteWitnessTransaction(coldWatch.getAddress(), voteStatus);
-            Main.OverlayUI<ColdUnsignedVoteController> screen = Main.instance.overlayUI("cold_unsigned_vote.fxml");
+            Main.OverlayUI<CreateUnsignedVoteController> screen = Main.instance.overlayUI("create_unsigned_vote_for_cold.fxml");
             screen.controller.initialize(coldTransaction);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

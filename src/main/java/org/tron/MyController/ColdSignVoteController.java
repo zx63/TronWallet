@@ -3,6 +3,7 @@ package org.tron.MyController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -17,6 +18,7 @@ import org.tron.common.crypto.ECKey;
 import org.tron.common.utils.TransactionUtils;
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
+import org.tron.walletcli.Client;
 import org.tron.walletserver.WalletClient;
 
 import java.util.List;
@@ -31,7 +33,8 @@ public class ColdSignVoteController {
 
     public TextArea signedHexText;
     public TextArea unsignedHexText;
-    public HBox unsignedHBox;
+    public HBox signedHBox;
+    public PasswordField password;
 
     Protocol.Transaction unSignedTransaction;
     private ObservableList<MyVoteItem> voteData = FXCollections.observableArrayList();
@@ -67,9 +70,15 @@ public class ColdSignVoteController {
     }
 
     public void sign(ActionEvent actionEvent) {
-        unsignedHBox.setVisible(false);
-        signedHexText.setVisible(true);
-        ECKey ecKey = ECKey.fromPrivate(Hex.decode(ShareData.getPrivateKey()));
+        Client client = Client.getInstance();
+        if (!client.checkPassword(password.getText())) {
+            GuiUtils.informationalAlert("Failed", "Wrong password");
+            return;
+        }
+
+        signedHBox.setVisible(true);
+        unsignedHexText.setVisible(false);
+        ECKey ecKey = ECKey.fromPrivate(Hex.decode(password.getText()));
         Protocol.Transaction signedTransaction = TransactionUtils.sign(unSignedTransaction, ecKey);
         byte[] contentByte = signedTransaction.toByteArray();
         String content = Hex.toHexString(contentByte);

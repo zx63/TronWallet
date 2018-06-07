@@ -3,6 +3,7 @@ package org.tron.MyController;
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ public class TokenParticipateController {
     public Label price;
     public TextField amount;
     public CheckBox agree;
+    public PasswordField password;
 
     public Protocol.Account account;
 
@@ -79,12 +81,16 @@ public class TokenParticipateController {
     }
 
     public void okClickedAndChecked() {
+        if (!client.checkPassword(password.getText())) {
+            GuiUtils.informationalAlert("Failed", "Wrong password");
+            return;
+        }
         if (agree.isSelected()) {
             long count = Long.parseLong(amount.getText());
             if (count == 0) {
                 return;
             }
-            GrpcAPI.Return result = client.participateAssetIssue(ShareData.getPassword(), tokenItem.getIssuer(), tokenItem.getName(), count * Config.DROP_UNIT);
+            GrpcAPI.Return result = client.participateAssetIssue(password.getText(), tokenItem.getIssuer(), tokenItem.getName(), count * Config.DROP_UNIT);
             if (result.getResult()) {
                 GuiUtils.informationalAlert("Success", "Get " + count + " " + tokenItem.getName());
             } else {

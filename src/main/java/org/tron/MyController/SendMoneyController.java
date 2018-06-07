@@ -3,6 +3,7 @@ package org.tron.MyController;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.ShareData;
@@ -18,6 +19,7 @@ public class SendMoneyController {
     public Button cancelBtn;
     public TextField toAddress;
     public TextField amount;
+    public PasswordField password;
     public ComboBox<String> type;
 
     public Main.OverlayUI overlayUI;
@@ -44,9 +46,13 @@ public class SendMoneyController {
         sendBtn.setDisable(true);
         cancelBtn.setDisable(true);
         Client client = Client.getInstance();
+        if (!client.checkPassword(password.getText())) {
+            GuiUtils.informationalAlert("Failed", "Wrong password");
+            return;
+        }
         try {
             if (type.getValue().equals("TRX")) {
-                GrpcAPI.Return result = client.sendCoin(ShareData.getPassword(), toAddress.getText(), (long) (Double.parseDouble(amount.getText()) * Config.DROP_UNIT));
+                GrpcAPI.Return result = client.sendCoin(password.getText(), toAddress.getText(), (long) (Double.parseDouble(amount.getText()) * Config.DROP_UNIT));
                 if (result.getResult()) {
                     GuiUtils.informationalAlert("Success", "Send " + amount.getText() + " TRX to " + toAddress.getText());
                 } else {
@@ -54,7 +60,7 @@ public class SendMoneyController {
                     return;
                 }
             } else {
-                GrpcAPI.Return result = client.transferAsset(ShareData.getPassword(), toAddress.getText(), type.getValue(), Long.parseLong(amount.getText()));
+                GrpcAPI.Return result = client.transferAsset(password.getText(), toAddress.getText(), type.getValue(), Long.parseLong(amount.getText()));
                 if (result.getResult()) {
                     GuiUtils.informationalAlert("Success", "Send " + amount.getText() + " " + type.getValue() + " to " + toAddress.getText());
                 } else {

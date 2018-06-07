@@ -3,9 +3,6 @@ package org.tron.MyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Some generic utilities to make Java a bit less annoying.
- */
 public class WTUtils {
     private static final Logger log = LoggerFactory.getLogger(WTUtils.class);
 

@@ -312,7 +312,7 @@ public class MainController implements Initializable {
     }
 
     public void offlineSignVoteClicked(ActionEvent actionEvent) {
-        Main.OverlayUI<SignTransactionController> screen = Main.instance.overlayUI("sign_transaction_sign_vote.fxml");
+        Main.OverlayUI<SignTransactionController> screen = Main.instance.overlayUI("sign_cold_vote.fxml");
     }
 
     public boolean checkAccount() {
