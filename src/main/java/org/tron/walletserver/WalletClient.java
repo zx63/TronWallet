@@ -811,7 +811,7 @@ public class WalletClient {
     }
     byte[] address = null;
     try {
-      logger.info("decode58Check {}", addressBase58);
+//      logger.info("decode58Check {}", addressBase58);
       address = decode58Check(addressBase58);
     } catch (Exception e) {
       e.printStackTrace();

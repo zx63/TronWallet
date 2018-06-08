@@ -189,10 +189,14 @@ public class ShareData {
 //                }
 //                if (client.login(ShareData.getPassword())) {
                 if (ShareData.isLogin) {
+                    long start = System.currentTimeMillis();
                     Protocol.Account account = client.queryAccount();
+                    long end = System.currentTimeMillis();
                     if (client.getAddress() == null || client.getAddress().isEmpty()) {
                         return;
                     }
+
+                    logger.debug("query account, time cost: {}", (end - start));
 
                     long frozenBalance = 0;
                     if (account.getFrozenCount() > 0) {
@@ -253,9 +257,12 @@ public class ShareData {
                         return;
                     }
 
-                    GrpcAPI.TransactionList transactionFromList = WalletClient.getTransactionsFromThis(addressBytes, 0, 500).get();
+                    long start = System.currentTimeMillis();
+                    GrpcAPI.TransactionList transactionFromList = WalletClient.getTransactionsFromThis(addressBytes, 0, 1000).get();
+                    long end = System.currentTimeMillis();
 
                     if (transactionFromList != null) {
+                        logger.debug("retrive from this list, count:{} time cost: {}", transactionFromList.getTransactionCount(), (end - start));
                         ShareData.setFromTransactionList(transactionFromList.getTransactionList());
                     }
                 }
@@ -318,9 +325,12 @@ public class ShareData {
                         return;
                     }
 
-                    GrpcAPI.TransactionList transactionToList = WalletClient.getTransactionsToThis(addressBytes, 0, 500).get();
+                    long start = System.currentTimeMillis();
+                    GrpcAPI.TransactionList transactionToList = WalletClient.getTransactionsToThis(addressBytes, 0, 1000).get();
+                    long end = System.currentTimeMillis();
 
                     if (transactionToList != null) {
+                        logger.debug("retrive to this list, count:{} time cost: {}", transactionToList.getTransactionCount(), (end - start));
                         ShareData.setToTransactionList(transactionToList.getTransactionList());
                     }
                 }
@@ -378,9 +388,13 @@ public class ShareData {
 //                        return;
 //                    }
                 if (ShareData.isLogin) {
+                    long start = System.currentTimeMillis();
                     GrpcAPI.AssetIssueList tokenList = client.getAssetIssueList().get();
+                    long end = System.currentTimeMillis();
 
                     if (tokenList != null) {
+
+                        logger.debug("get token list, count:{} time cost: {}", tokenList.getAssetIssueCount(), (end - start));
                         ShareData.setTokenList(tokenList.getAssetIssueList());
                     }
                 }
@@ -390,7 +404,7 @@ public class ShareData {
             } catch (Throwable t) {
                 logger.error("Unhandled exception", t);
             }
-        }, 1, 2, TimeUnit.SECONDS);
+        }, 1, 5, TimeUnit.SECONDS);
 
         witnessExecutor.scheduleWithFixedDelay(() -> {
             if (isCold.get()) {
@@ -406,12 +420,13 @@ public class ShareData {
 //                        return;
 //                    }
                 if (ShareData.isLogin) {
+                    long start = System.currentTimeMillis();
                     GrpcAPI.WitnessList witnessList = client.listWitnesses().get();
+                    long end = System.currentTimeMillis();
                     if (witnessList == null) {
                         return;
-                    }
-
-                    if (witnessList != null) {
+                    } else {
+                        logger.debug("retrive witness list, count:{} time cost: {}", witnessList.getWitnessesCount(), (end - start));
                         ShareData.setWitnessList(witnessList.getWitnessesList());
                     }
                 }
