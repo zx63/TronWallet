@@ -59,14 +59,13 @@ public class TokenParticipateController {
         desc.setText(item.getDesc());
         priceCalc = 1.0f * (Long.valueOf(item.getTrxNum()) / Config.DROP_UNIT) / Long.valueOf(item.getNum());
         price.setText(new DecimalFormat(",###.######").format(priceCalc));
-        amount.setText("0");
         amount.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 long count = Long.parseLong(newValue);
                 agree.setText("Confirmed to spend " + (priceCalc * count) + " TRX and get " + newValue + " tokens.");
             } catch (Exception e) {
                 GuiUtils.informationalAlert("Invalid amount", "The amount:" + newValue);
-                amount.setText("0");
+                amount.setText("");
             }
         });
 

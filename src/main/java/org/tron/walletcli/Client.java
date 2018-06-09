@@ -164,7 +164,6 @@ public class Client {
     }
 
     String addressEncode58Check = WalletClient.encode58Check(wallet.getAddress());
-    logger.info("ShareData.setAddress {} {}", addressEncode58Check, wallet.getAddress());
     return addressEncode58Check;
   }
 

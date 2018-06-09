@@ -411,7 +411,7 @@ public class MainController implements Initializable {
         }
         EntityColdWatch entityColdWatch = new EntityColdWatch(0, watchAddress.getText());
         SQLiteUtil.setColdWatchEntity(entityColdWatch);
-        GuiUtils.informationalAlert("Success", "You can request offline sign and cold wallet vote now.");
+        GuiUtils.informationalAlert("Success", "");
     }
 
     static class XCellData {
