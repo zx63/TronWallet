@@ -23,13 +23,16 @@ import javafx.scene.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tron.MyEntity.EntityColdWatch;
 import org.tron.MyUiItem.BalanceItem;
 import org.tron.MyUiItem.TransactionItem;
 import org.tron.MyUtils.Config;
+import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
 import org.tron.common.crypto.Hash;
 import org.tron.common.crypto.Sha256Hash;
 import org.tron.common.utils.ByteArray;
+import org.tron.core.config.Parameter;
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
 import org.tron.walletserver.WalletClient;
@@ -85,6 +88,7 @@ public class MainController implements Initializable {
 
     public MenuItem copyTransactionItem;
 
+    public TextField watchAddress;
 
     public Pane titlePane;
     private double xOffset;
@@ -123,17 +127,9 @@ public class MainController implements Initializable {
             Main.instance.mainWindow.setY(yInit + e.getScreenY() - yOffset);
         });
         ShareData.accountSimpleObjectProperty.addListener((observable, oldValue, newValue) -> {
-            if (toolTab == null) {
-                try {
-                    toolTab = tabPane.getTabs().get(3);
-                    toolTab.setContent(FXMLLoader.load(this.getClass().getResource("sign_transaction_choice.fxml")));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             if (voteTab == null) {
                 try {
-                    voteTab = tabPane.getTabs().get(4);
+                    voteTab = tabPane.getTabs().get(3);
                     voteTab.setContent(FXMLLoader.load(this.getClass().getResource("vote.fxml")));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -141,8 +137,16 @@ public class MainController implements Initializable {
             }
             if (tokenTab == null) {
                 try {
-                    tokenTab = tabPane.getTabs().get(5);
+                    tokenTab = tabPane.getTabs().get(4);
                     tokenTab.setContent(FXMLLoader.load(this.getClass().getResource("token.fxml")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (toolTab == null) {
+                try {
+                    toolTab = tabPane.getTabs().get(5);
+                    toolTab.setContent(FXMLLoader.load(this.getClass().getResource("sign_transaction_choice.fxml")));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -270,6 +274,11 @@ public class MainController implements Initializable {
             clipboardContent.putString(curr.toString());
             clipboard.setContent(clipboardContent);
         });
+
+        EntityColdWatch coldWatch = SQLiteUtil.getEntityColdWatch();
+        if (coldWatch != null && StringUtils.isNotEmpty(coldWatch.getAddress())) {
+            watchAddress.setText(coldWatch.getAddress());
+        }
     }
 
     public void sendMoneyOutClicked(ActionEvent event) {
@@ -393,6 +402,16 @@ public class MainController implements Initializable {
         }
 
         return returnData;
+    }
+
+    public void setWatch(ActionEvent actionEvent) {
+        if (StringUtils.length(watchAddress.getText()) != Parameter.CommonConstant.BASE58CHECK_ADDRESS_SIZE) {
+            GuiUtils.informationalAlert("Fail", "Not a tron address");
+            return;
+        }
+        EntityColdWatch entityColdWatch = new EntityColdWatch(0, watchAddress.getText());
+        SQLiteUtil.setColdWatchEntity(entityColdWatch);
+        GuiUtils.informationalAlert("Success", "You can request offline sign and cold wallet vote now.");
     }
 
     static class XCellData {

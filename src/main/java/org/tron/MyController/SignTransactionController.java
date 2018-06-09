@@ -16,9 +16,9 @@ import org.tron.MyEntity.EntityColdWatch;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.QRUtil;
 import org.tron.MyUtils.SQLiteUtil;
-import org.tron.MyUtils.ShareData;
 import org.tron.common.crypto.ECKey;
 import org.tron.common.utils.TransactionUtils;
+import org.tron.core.config.Parameter;
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
 import org.tron.walletcli.Client;
@@ -30,6 +30,8 @@ public class SignTransactionController {
     public TextField amount;
     public TextArea unSignedText;
     public CheckBox signed;
+
+    public TextField watchAddress;
 
     public PasswordField password;
     public HBox qrcodeBox;
@@ -79,7 +81,7 @@ public class SignTransactionController {
             GuiUtils.informationalAlert("No watched cold wallet address found", "Please add it in settings");
             return;
         }
-        Main.OverlayUI<SignTransactionController> screen = Main.instance.overlayUI("sign_transaction_create.fxml");
+        Main.OverlayUI<SignTransactionController> screen = Main.instance.overlayUI("create_unsigned_transaction.fxml");
     }
 
     public void chooseBroadcast(ActionEvent actionEvent) {

@@ -90,6 +90,7 @@ public class VoteController {
     }
 
     public void reloadClicked(ActionEvent actionEvent) {
+        GuiUtils.informationalAlert("Reload my vote count", "");
         initialize();
     }
 
@@ -146,6 +147,7 @@ public class VoteController {
         EntityColdWatch coldWatch = SQLiteUtil.getEntityColdWatch();
         if (coldWatch == null || StringUtils.isEmpty(coldWatch.getAddress())) {
             GuiUtils.informationalAlert("No watched cold wallet address found", "Please add it in settings");
+            ShareData.tabSimpleObjectProperty.set(6);
             return;
         }
         account = ShareData.getAccount();

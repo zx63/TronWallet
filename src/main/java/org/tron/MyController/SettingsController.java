@@ -107,15 +107,4 @@ public class SettingsController {
             GuiUtils.informationalAlert("Wrong password", "The password you entered is wrong.");
         }
     }
-
-    public void setWatch(ActionEvent actionEvent) {
-
-        if (StringUtils.length(watchAddress.getText()) != Parameter.CommonConstant.BASE58CHECK_ADDRESS_SIZE) {
-            GuiUtils.informationalAlert("Fail", "Not a tron address");
-            return;
-        }
-        EntityColdWatch entityColdWatch = new EntityColdWatch(0, watchAddress.getText());
-        SQLiteUtil.setColdWatchEntity(entityColdWatch);
-        GuiUtils.informationalAlert("Success", "You can request offline sign and cold wallet vote now.");
-    }
 }
