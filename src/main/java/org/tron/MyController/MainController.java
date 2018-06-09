@@ -29,7 +29,6 @@ import org.tron.MyUiItem.TransactionItem;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
-import org.tron.common.crypto.Hash;
 import org.tron.common.crypto.Sha256Hash;
 import org.tron.common.utils.ByteArray;
 import org.tron.core.config.Parameter;
@@ -101,7 +100,10 @@ public class MainController implements Initializable {
         ShareData.tabSimpleObjectProperty.addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                switchTab(newValue.intValue());
+                if (newValue.intValue() == 6) {
+                    switchTab(newValue.intValue());
+                    ShareData.tabSimpleObjectProperty.set(-1);
+                }
             }
         });
         close.setOnMouseEntered(e -> close.setImage(new Image("images/close_hover.png")));
