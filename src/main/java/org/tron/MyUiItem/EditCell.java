@@ -1,25 +1,21 @@
 package org.tron.MyUiItem;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EditCell<S, T> extends TextFieldTableCell<S, T> {
 
+    static final Logger logger = LoggerFactory.getLogger(EditCell.class);
     private TextField textField;
     private boolean escapePressed = false;
     private TablePosition<S, ?> tablePos = null;
@@ -56,7 +52,16 @@ public class EditCell<S, T> extends TextFieldTableCell<S, T> {
         }
     }
 
-    /** {@inheritDoc} */
+    private String getNumber(String value) {
+        try {
+            return String.valueOf(Long.parseLong(value));
+        } catch (Exception e) {
+            return "0";
+        }
+    }
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void commitEdit(T newValue) {
         if (!isEditing())
@@ -79,7 +84,9 @@ public class EditCell<S, T> extends TextFieldTableCell<S, T> {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void cancelEdit() {
         if (escapePressed) {
@@ -91,12 +98,14 @@ public class EditCell<S, T> extends TextFieldTableCell<S, T> {
             // we interpret it as commit.
             String newText = textField.getText();
             // commit the new text to the model
-            this.commitEdit(getConverter().fromString(newText));
+            this.commitEdit(getConverter().fromString(getNumber(newText)));
         }
         setGraphic(null); // stop editing with TextField
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
@@ -107,40 +116,35 @@ public class EditCell<S, T> extends TextFieldTableCell<S, T> {
 
         final TextField textField = new TextField(getItemText());
 
-        textField.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("hi");
-            }
-        });
-
         // Use onAction here rather than onKeyReleased (with check for Enter),
         textField.setOnAction(event -> {
+            logger.info("setOnAction {}", event);
             if (getConverter() == null) {
                 throw new IllegalStateException("StringConverter is null.");
             }
-            this.commitEdit(getConverter().fromString(textField.getText()));
+
+            String newText = textField.getText();
+            this.commitEdit(getConverter().fromString(getNumber(newText)));
             event.consume();
         });
 
-        textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable,
-                                Boolean oldValue, Boolean newValue) {
-                if (!newValue) {
-                    commitEdit(getConverter().fromString(textField.getText()));
-                }
+        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            logger.info("focusedProperty {} {}", newValue, textField.getText());
+            if (!newValue) {
+                String newText = textField.getText();
+                commitEdit(getConverter().fromString(getNumber(newText)));
             }
         });
 
         textField.setOnKeyPressed(t -> {
+            logger.debug("setOnKeyPressed {}", t);
             if (t.getCode() == KeyCode.ESCAPE)
                 escapePressed = true;
             else
                 escapePressed = false;
         });
         textField.setOnKeyReleased(t -> {
+            logger.debug("setOnKeyReleased {}", t);
             if (t.getCode() == KeyCode.ESCAPE) {
                 throw new IllegalArgumentException(
                         "did not expect esc key releases here.");
@@ -148,6 +152,7 @@ public class EditCell<S, T> extends TextFieldTableCell<S, T> {
         });
 
         textField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            logger.info("addEventFilter {}", event);
             if (event.getCode() == KeyCode.ESCAPE) {
                 textField.setText(getConverter().toString(getItem()));
                 cancelEdit();
