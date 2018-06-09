@@ -43,13 +43,13 @@ public class SendMoneyController {
     }
 
     public void send(ActionEvent event) {
-        sendBtn.setDisable(true);
-        cancelBtn.setDisable(true);
         Client client = Client.getInstance();
         if (!client.checkPassword(password.getText())) {
             GuiUtils.informationalAlert("Failed", "Wrong password");
             return;
         }
+        sendBtn.setDisable(true);
+        cancelBtn.setDisable(true);
         try {
             if (type.getValue().equals("TRX")) {
                 GrpcAPI.Return result = client.sendCoin(password.getText(), toAddress.getText(), (long) (Double.parseDouble(amount.getText()) * Config.DROP_UNIT));
