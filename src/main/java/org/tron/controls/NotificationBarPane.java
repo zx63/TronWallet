@@ -10,18 +10,22 @@ import javafx.beans.value.ObservableDoubleValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 import org.tron.MyController.GuiUtils;
+import org.tron.MyUtils.Config;
 import org.tron.MyUtils.easing.EasingMode;
 import org.tron.MyUtils.easing.ElasticInterpolator;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 
 /**
  * Wraps the given Node in a BorderPane and allows a thin bar to slide in from the bottom or top, squeezing the content
@@ -43,6 +47,38 @@ public class NotificationBarPane extends BorderPane {
         super(content);
         progressBar = new ProgressBar();
         label = new Label("infobar!");
+        label.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                label.setUnderline(true);
+            }
+        });
+        label.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                label.setUnderline(false);
+            }
+        });
+
+        label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public boolean isWindows() {
+                String os = System.getProperty("os.name").toLowerCase();
+                return (os.indexOf("win") >= 0);
+            }
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    if (isWindows()) {
+                        Runtime.getRuntime().exec("Explorer.exe " + Config.WALLET_PATH);
+                    } else {
+                        Runtime.getRuntime().exec("open " + Config.WALLET_PATH);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         bar = new HBox(label);
         bar.setMinHeight(0.0);
         bar.getStyleClass().add("info-bar");

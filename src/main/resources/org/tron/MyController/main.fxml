@@ -27,7 +27,7 @@
                                promptText="address" style="-fx-background-color: #00000000; -fx-text-fill: white"
                                text="address"/>
                     <Region minWidth="50" HBox.hgrow="ALWAYS"/>
-                    <ImageView fx:id="settings" fitHeight="24.0" fitWidth="24" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="settings" fitHeight="18" fitWidth="18" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../../../images/settings.png"/>
                         </image>

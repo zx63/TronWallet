@@ -1,20 +1,23 @@
 package org.tron.MyController;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.tron.MyEntity.EntityMeta;
 import org.tron.MyUtils.Config;
 import org.tron.MyUtils.SQLiteUtil;
 import org.tron.MyUtils.ShareData;
 import org.tron.controls.NotificationBarPane;
-import org.tron.MyEntity.EntityMeta;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -88,7 +91,7 @@ public class Main extends Application {
         } else {
             overlayUI("create_wallet.fxml");
         }
-        notificationBar.pushItem(Config.WALLET_DB_FILE, null);
+        notificationBar.pushItem(String.format("%s", Config.WALLET_DB_FILE), null);
     }
 
     public <T> OverlayUI<T> overlayUI(Node node, T controller) {
