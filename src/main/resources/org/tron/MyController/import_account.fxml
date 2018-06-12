@@ -34,9 +34,13 @@
                         <Font name="System Bold" size="13.0"/>
                     </font>
                 </Label>
-                <HBox fx:id="buttonsBox" alignment="CENTER_RIGHT" layoutX="272.0" layoutY="360.0" prefHeight="26.0"
-                      prefWidth="561.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
+                <HBox fx:id="buttonsBox" alignment="CENTER_RIGHT" AnchorPane.leftAnchor="17"
+                      AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
                     <children>
+                        <Button fx:id="backButton" layoutX="523.0" layoutY="360.0"
+                                maxWidth="80.0" mnemonicParsing="false" onAction="#backClicked" text="Back"
+                                HBox.hgrow="ALWAYS"/>
+                        <Region HBox.hgrow="ALWAYS"/>
                         <Button fx:id="confirmButton" defaultButton="true" layoutX="523.0"
                                 layoutY="360.0"
                                 maxWidth="80.0" mnemonicParsing="false" onAction="#confirmClicked" text="Confirm"

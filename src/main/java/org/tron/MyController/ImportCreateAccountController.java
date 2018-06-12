@@ -34,4 +34,7 @@ public class ImportCreateAccountController {
         clearPassword();
     }
 
+    public void backClicked(ActionEvent actionEvent) {
+        Main.instance.overlayUI("create_wallet.fxml");
+    }
 }

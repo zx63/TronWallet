@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -25,6 +26,7 @@ public class FreezeController {
     public PasswordField password;
     public Label frozen;
     public Label balance;
+    public Button freeze;
 
     public void initialize() {
         Platform.runLater(count::requestFocus);
@@ -55,13 +57,18 @@ public class FreezeController {
             GuiUtils.informationalAlert("Failed", "Wrong password");
             return;
         }
-        GrpcAPI.Return result = client.freezeBalance(password.getText(), Long.valueOf(count.getText()) * Config.DROP_UNIT, Long.valueOf(days.getText()));
-        if (result.getResult()) {
-            GuiUtils.informationalAlert("Success", "Add newly " + count.getText() + " TRX to frozon for " + days.getText() + " days");
-            overlayUI.done();
-        } else {
-            GuiUtils.informationalAlert("Failed to freeze", result.getCode().toString());
-            return;
+        freeze.setDisable(true);
+        try {
+            GrpcAPI.Return result = client.freezeBalance(password.getText(), Long.valueOf(count.getText()) * Config.DROP_UNIT, Long.valueOf(days.getText()));
+            if (result.getResult()) {
+                GuiUtils.informationalAlert("Success", "Add newly " + count.getText() + " TRX to frozon for " + days.getText() + " days");
+                overlayUI.done();
+            } else {
+                GuiUtils.informationalAlert("Failed to freeze", result.getCode().toString());
+                return;
+            }
+        }finally {
+            freeze.setDisable(false);
         }
     }
 }

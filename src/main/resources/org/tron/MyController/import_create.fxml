@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
@@ -30,18 +28,36 @@
                         </Label>
                     </children>
                 </HBox>
-                <VBox alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+                <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
                       AnchorPane.rightAnchor="0" AnchorPane.topAnchor="60">
-                    <Button fx:id="createButton"
-                            onAction="#createClicked" prefHeight="54" prefWidth="400"
-                            text="Create account if you don't have private key">
-                    </Button>
-                    <Button fx:id="importButton"
-                            onAction="#importClicked" prefHeight="54" prefWidth="400"
-                            text="Import private key if you already have private key">
-                    </Button>
-                    <CheckBox fx:id="cold" text="Cold wallet mode"/>
+                    <children>
+                        <Button fx:id="createButton"
+                                onAction="#createClicked" prefHeight="54" prefWidth="400"
+                                text="Create account if you don't have private key">
+                        </Button>
+                        <Button fx:id="importButton"
+                                onAction="#importClicked" prefHeight="54" prefWidth="400"
+                                text="Import private key if you already have private key">
+                        </Button>
+                        <VBox alignment="CENTER" spacing="20.0" prefWidth="400">
+                            <children>
+                                <Label text="Cold Wallet Address for Watch"/>
+                                <TextField fx:id="watchAddress" alignment="CENTER"
+                                           promptText="Watched Cold Wallet Address"/>
+                                <CheckBox fx:id="cold" text="Cold wallet mode"/>
+                            </children>
+                        </VBox>
+                    </children>
                 </VBox>
+                <HBox alignment="CENTER_RIGHT" AnchorPane.leftAnchor="17" AnchorPane.bottomAnchor="14.0"
+                      AnchorPane.rightAnchor="17.0">
+                    <children>
+                        <Button fx:id="backButton" layoutX="523.0" layoutY="360.0"
+                                maxWidth="80.0" mnemonicParsing="false" onAction="#backClicked" text="Back"
+                                HBox.hgrow="ALWAYS"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
             </children>
             <effect>
                 <DropShadow/>

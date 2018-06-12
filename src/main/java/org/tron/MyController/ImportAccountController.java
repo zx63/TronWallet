@@ -77,4 +77,8 @@ public class ImportAccountController {
         }
         GuiUtils.informationalAlert("Bad private key", "The private key you entered is incorrect.");
     }
+
+    public void backClicked(ActionEvent actionEvent) {
+        Main.OverlayUI<FreezeController> screen = Main.instance.overlayUI("import_create.fxml");
+    }
 }

@@ -3,8 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0"
@@ -32,9 +30,12 @@
                 <Label fx:id="explanationLabel" layoutX="22.0" layoutY="83.0" prefHeight="52.0" prefWidth="561.0"
                        text="If you forget/lose your private key you will never be able to access your assets, and no one will be able to help you recover it"
                        wrapText="true" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="17.0"/>
-                <HBox alignment="CENTER_RIGHT" layoutX="272.0" layoutY="360.0" prefHeight="26.0" prefWidth="561.0"
-                      spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
+                <HBox alignment="CENTER_RIGHT" AnchorPane.leftAnchor="17" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
                     <children>
+                        <Button fx:id="backButton" layoutX="523.0" layoutY="360.0"
+                                maxWidth="80.0" mnemonicParsing="false" onAction="#backClicked" text="Back"
+                                HBox.hgrow="ALWAYS"/>
+                        <Region HBox.hgrow="ALWAYS"/>
                         <Button fx:id="okButton" defaultButton="true" layoutX="523.0"
                                 layoutY="360.0" maxWidth="80.0" mnemonicParsing="false" onAction="#okClicked" text="OK"
                                 HBox.hgrow="ALWAYS"/>

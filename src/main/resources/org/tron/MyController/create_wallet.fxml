@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.Region?>
 <StackPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tron.MyController.CreateWalletController">
     <children>
         <AnchorPane maxHeight="450.0" maxWidth="800.0" styleClass="root-float">
@@ -33,8 +34,11 @@
                     </children>
                 </HBox>
                 <Label fx:id="explanationLabel" layoutX="22.0" layoutY="83.0" prefHeight="52.0" prefWidth="561.0" text="Setting a password on your wallet makes it safer against viruses and theft. You will need to enter your password whenever money is sent." wrapText="true" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="17.0" />
-                <HBox alignment="CENTER_RIGHT" layoutX="272.0" layoutY="360.0" prefHeight="26.0" prefWidth="561.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
+                <HBox alignment="CENTER_RIGHT" AnchorPane.leftAnchor="17" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="17.0">
                     <children>
+                        <Button fx:id="backButton" maxWidth="80.0" mnemonicParsing="false" onAction="#closeClicked" text="Close"
+                                HBox.hgrow="ALWAYS"/>
+                        <Region HBox.hgrow="ALWAYS"/>
                         <Button fx:id="okButton" layoutX="523.0" layoutY="360.0" maxWidth="80.0" mnemonicParsing="false" onAction="#setPasswordClicked" text="OK" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>

@@ -59,4 +59,7 @@ public class CreateAccountController {
         clipboard.setContent(clipboardContent);
     }
 
+    public void backClicked(ActionEvent actionEvent) {
+        Main.OverlayUI<FreezeController> screen = Main.instance.overlayUI("import_create.fxml");
+    }
 }

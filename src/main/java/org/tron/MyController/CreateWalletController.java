@@ -45,6 +45,6 @@ public class CreateWalletController {
     }
 
     public void closeClicked(ActionEvent event) {
-        overlayUI.done();
+        Main.instance.stop();
     }
 }

@@ -31,7 +31,7 @@
                                 mnemonicParsing="false"
                                 onAction="#cancelClicked" text="Cancel" HBox.hgrow="ALWAYS"/>
                         <Button layoutX="523.0" layoutY="360.0" maxWidth="80.0"
-                                mnemonicParsing="false"
+                                mnemonicParsing="false" fx:id="freeze"
                                 onAction="#okClicked" text="OK" HBox.hgrow="ALWAYS"/>
                     </children>
                 </HBox>
