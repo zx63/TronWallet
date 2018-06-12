@@ -33,10 +33,10 @@
                     <HBox fx:id="contentHbox" alignment="CENTER" spacing="20.0">
                         <children>
                             <VBox alignment="CENTER">
-                                <TextArea fx:id="unSignedText" prefHeight="150.0" prefWidth="400"
+                                <TextArea fx:id="unSignedText" prefHeight="150.0" prefWidth="300"
                                           promptText="paste unsigned transaction hex text" wrapText="true"/>
                             </VBox>
-                            <VBox alignment="CENTER_LEFT" prefWidth="300.0" spacing="10">
+                            <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="10">
                                 <children>
                                     <TextField fx:id="fromAddress" editable="false" promptText="from tron address"/>
                                     <TextField fx:id="toAddress" editable="false" promptText="to tron address"/>
