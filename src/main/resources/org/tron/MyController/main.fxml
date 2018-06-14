@@ -16,6 +16,12 @@
                         <Image url="@../../../images/close.png"/>
                     </image>
                 </ImageView>
+                <ImageView fx:id="min" fitHeight="16" fitWidth="16" pickOnBounds="true" preserveRatio="true"
+                           AnchorPane.leftAnchor="30" AnchorPane.topAnchor="5">
+                    <image>
+                        <Image url="@../../../images/min.png"/>
+                    </image>
+                </ImageView>
                 <HBox alignment="CENTER_LEFT" prefHeight="38.0" AnchorPane.leftAnchor="2" AnchorPane.rightAnchor="10"
                       AnchorPane.topAnchor="20">
                     <ImageView fitHeight="38.0" fitWidth="166" pickOnBounds="true" preserveRatio="true">

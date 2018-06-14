@@ -83,6 +83,7 @@ public class MainController implements Initializable {
     public Label balance;
 
     public ImageView close;
+    public ImageView min;
     public ImageView settings;
 
     public MenuItem copyTransactionItem;
@@ -110,6 +111,11 @@ public class MainController implements Initializable {
         close.setOnMousePressed(e -> close.setImage(new Image("images/close_press.png")));
         close.setOnMouseExited(e -> close.setImage(new Image("images/close.png")));
         close.setOnMouseClicked(e -> Main.instance.stop());
+
+        min.setOnMouseEntered(e -> min.setImage(new Image("images/min_hover.png")));
+        min.setOnMousePressed(e -> min.setImage(new Image("images/min_press.png")));
+        min.setOnMouseExited(e -> min.setImage(new Image("images/min.png")));
+        min.setOnMouseClicked(e -> Main.instance.mainWindow.setIconified(true));
 
         settings.setOnMouseEntered(e -> settings.setImage(new Image("images/settings_hover.png")));
         settings.setOnMousePressed(e -> settings.setImage(new Image("images/settings_press.png")));
